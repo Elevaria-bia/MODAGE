@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/logo/favicon-32.png">
+  <meta name="description" content="Modas GE Langery — Conjuntos, Sutiã, Calcinha, Pijama e Camisola. Elegância íntima que transforma.">
+  <title>Coleção — Modas GE Langery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Josefin+Sans:wght@100;200;300;400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --choc:    #3D1C10;
+      --gold:    #C9A84C;
+      --gold-lt: #E8CB7B;
+      --gold-dk: #9E7B2E;
+      --rose:    #D4A8A0;
+      --rose-lt: #EDD8D4;
+      --rose-dk: #B07D75;
+      --noir:    #0D0D0D;
+      --noir2:   #141414;
+      --cream:   #FAF8F5;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      background:var(--noir);
+      color:var(--cream);
+      font-family:'Josefin Sans',sans-serif;
+      font-weight:300;
+      overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
+    }
+    a{text-decoration:none;color:inherit}
+    button{cursor:pointer;font-family:inherit;border:none;background:none}
+    img{display:block;width:100%;height:100%;object-fit:cover}
+
+    /* ── NAVBAR ──────────────────────────────────────────── */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:100;
+      padding:0 40px;height:70px;
+      display:flex;align-items:center;justify-content:space-between;
+      transition:background .4s,border-color .4s;
+      border-bottom:1px solid transparent;
+    }
+    .nav.scrolled{
+      background:rgba(13,13,13,.96);
+      border-bottom-color:rgba(201,168,76,.15);
+      backdrop-filter:blur(12px);
+    }
+    .nav__logo{
+      font-family:'Playfair Display',serif;
+      font-size:20px;font-weight:900;letter-spacing:.02em;
+      color:var(--cream);
+    }
+    .nav__logo span{color:var(--gold)}
+    .nav__logo small{
+      font-family:'Josefin Sans',sans-serif;
+      font-size:8px;letter-spacing:.4em;text-transform:uppercase;
+      color:rgba(201,168,76,.6);display:block;margin-top:1px;
+    }
+    .nav__links{
+      display:flex;gap:36px;
+    }
+    .nav__link{
+      font-size:9px;letter-spacing:.3em;text-transform:uppercase;
+      color:rgba(250,248,245,.5);transition:color .25s;
+    }
+    .nav__link:hover,.nav__link.active{color:var(--gold)}
+    .nav__actions{display:flex;gap:20px;align-items:center}
+    .nav__icon{font-size:16px;color:rgba(250,248,245,.5);transition:color .2s;cursor:pointer}
+    .nav__icon:hover{color:var(--gold)}
+    .nav__whatsapp{
+      font-size:9px;letter-spacing:.2em;text-transform:uppercase;
+      padding:9px 18px;border:1px solid var(--gold);color:var(--gold);
+      border-radius:1px;transition:all .25s;
+    }
+    .nav__whatsapp:hover{background:var(--gold);color:var(--noir)}
+    @media(max-width:768px){
+      .nav{padding:0 20px}
+      .nav__links{display:none}
+      .nav__whatsapp{display:none}
+    }
+
+    /* ── HERO ────────────────────────────────────────────── */
+    .hero{
+      height:100vh;min-height:600px;
+      position:relative;
+      display:flex;align-items:flex-end;
+      padding:0 60px 80px;
+      overflow:hidden;
+    }
+    .hero__bg{
+      position:absolute;inset:0;
+      background:
+        linear-gradient(to bottom, rgba(13,13,13,.3) 0%, rgba(13,13,13,.85) 100%),
+        linear-gradient(135deg, #2A1009 0%, #1A0A06 40%, #3D1C10 100%);
+    }
+    .hero__ornament{
+      position:absolute;inset:0;
+      display:flex;align-items:center;justify-content:center;
+      opacity:.12;
+      pointer-events:none;
+      user-select:none;
+    }
+    .hero__content{position:relative;z-index:1;max-width:700px}
+    .hero__label{
+      font-size:9px;letter-spacing:.5em;text-transform:uppercase;
+      color:var(--gold);display:block;margin-bottom:24px;
+    }
+    .hero__title{
+      font-family:'Playfair Display',serif;
+      font-size:clamp(52px,7vw,90px);
+      font-weight:400;line-height:.92;
+      color:var(--cream);margin-bottom:24px;
+    }
+    .hero__title em{
+      font-style:italic;color:var(--gold);display:block;
+    }
+    .hero__sub{
+      font-family:'Cormorant Garamond',serif;
+      font-size:clamp(16px,2vw,22px);font-weight:300;font-style:italic;
+      color:var(--rose-lt);line-height:1.5;
+      max-width:480px;margin-bottom:40px;
+    }
+    .hero__cta{display:flex;gap:14px;flex-wrap:wrap}
+    .btn-solid{
+      font-size:9px;letter-spacing:.3em;text-transform:uppercase;
+      padding:15px 36px;background:var(--gold);color:var(--noir);
+      border-radius:1px;transition:all .25s;display:inline-block;
+    }
+    .btn-solid:hover{background:var(--gold-lt);transform:translateY(-1px)}
+    .btn-border{
+      font-size:9px;letter-spacing:.3em;text-transform:uppercase;
+      padding:14px 35px;border:1px solid rgba(250,248,245,.3);color:var(--cream);
+      border-radius:1px;transition:all .25s;display:inline-block;
+    }
+    .btn-border:hover{border-color:var(--gold);color:var(--gold)}
+    .hero__scroll{
+      position:absolute;bottom:30px;right:60px;
+      display:flex;flex-direction:column;align-items:center;gap:8px;
+      font-size:8px;letter-spacing:.3em;text-transform:uppercase;
+      color:rgba(250,248,245,.3);
+    }
+    .hero__scroll-line{width:1px;height:40px;background:rgba(201,168,76,.4)}
+
+    /* ── FILTER STRIP ────────────────────────────────────── */
+    .filter-strip{
+      position:sticky;top:70px;z-index:90;
+      background:rgba(13,13,13,.95);
+      border-bottom:1px solid rgba(201,168,76,.1);
+      backdrop-filter:blur(10px);
+      padding:0 40px;
+    }
+    .filter-inner{
+      display:flex;align-items:center;
+      justify-content:space-between;gap:20px;
+      height:56px;
+    }
+    .filter-cats{display:flex;gap:2px}
+    .filter-btn{
+      font-size:9px;letter-spacing:.25em;text-transform:uppercase;
+      padding:8px 18px;color:rgba(250,248,245,.4);
+      border-radius:1px;transition:all .2s;
+      border-bottom:2px solid transparent;
+    }
+    .filter-btn:hover{color:var(--cream)}
+    .filter-btn.active{
+      color:var(--gold);
+      border-bottom-color:var(--gold);
+    }
+    .filter-right{
+      display:flex;align-items:center;gap:20px;
+    }
+    .filter-count{
+      font-size:9px;letter-spacing:.2em;text-transform:uppercase;
+      color:rgba(250,248,245,.3);white-space:nowrap;
+    }
+    .filter-search{
+      display:flex;align-items:center;gap:8px;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(201,168,76,.15);
+      border-radius:1px;padding:7px 14px;
+    }
+    .filter-search input{
+      background:none;border:none;outline:none;
+      color:var(--cream);font-family:'Josefin Sans',sans-serif;
+      font-size:11px;font-weight:300;width:140px;
+    }
+    .filter-search input::placeholder{color:rgba(250,248,245,.25)}
+    @media(max-width:768px){
+      .filter-strip{padding:0 16px}
+      .filter-search{display:none}
+    }
+
+    /* ── EDITORIAL INTRO ─────────────────────────────────── */
+    .editorial-intro{
+      padding:100px 60px;
+      display:grid;grid-template-columns:1fr 1fr;
+      gap:80px;align-items:center;
+      border-bottom:1px solid rgba(201,168,76,.08);
+    }
+    .editorial-intro__quote{
+      font-family:'Playfair Display',serif;
+      font-size:clamp(32px,4vw,52px);
+      font-weight:400;font-style:italic;
+      line-height:1.2;color:var(--cream);
+    }
+    .editorial-intro__quote span{color:var(--gold)}
+    .editorial-intro__text{
+      font-family:'Cormorant Garamond',serif;
+      font-size:18px;font-weight:300;
+      line-height:1.8;color:rgba(250,248,245,.6);
+    }
+    .editorial-intro__divider{
+      width:40px;height:1px;background:var(--gold);
+      margin:20px 0;
+    }
+    @media(max-width:768px){
+      .editorial-intro{
+        grid-template-columns:1fr;padding:60px 20px;gap:40px;
+      }
+    }
+
+    /* ── PRODUCTS GRID ───────────────────────────────────── */
+    .products-section{padding:60px 40px 100px}
+    .section-header{
+      display:flex;align-items:flex-end;justify-content:space-between;
+      margin-bottom:50px;padding-bottom:20px;
+      border-bottom:1px solid rgba(201,168,76,.1);
+    }
+    .section-eyebrow{
+      font-size:8px;letter-spacing:.4em;text-transform:uppercase;
+      color:var(--gold);display:block;margin-bottom:8px;
+    }
+    .section-title{
+      font-family:'Playfair Display',serif;
+      font-size:clamp(28px,4vw,44px);
+      font-weight:400;color:var(--cream);line-height:1;
+    }
+    .section-title em{font-style:italic;color:var(--gold)}
+    .see-all{
+      font-size:9px;letter-spacing:.25em;text-transform:uppercase;
+      color:rgba(250,248,245,.35);transition:color .2s;
+      display:flex;align-items:center;gap:8px;white-space:nowrap;
+    }
+    .see-all:hover{color:var(--gold)}
+    .see-all::after{content:'→';transition:transform .2s}
+    .see-all:hover::after{transform:translateX(4px)}
+
+    /* GRID */
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:2px;
+    }
+    .grid--3{grid-template-columns:repeat(3,1fr)}
+    .grid--hero{grid-template-columns:2fr 1fr 1fr}
+    @media(max-width:1024px){.grid{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:768px){.grid{grid-template-columns:repeat(2,1fr)}  .grid--hero{grid-template-columns:1fr 1fr}}
+    @media(max-width:480px){.grid{grid-template-columns:1fr 1fr}}
+
+    /* PRODUCT CARD */
+    .pcard{
+      position:relative;overflow:hidden;
+      background:var(--noir2);
+      cursor:pointer;
+    }
+    .pcard__img{
+      aspect-ratio:3/4;
+      position:relative;overflow:hidden;
+    }
+    .pcard__img-inner{
+      width:100%;height:100%;
+      display:flex;align-items:center;justify-content:center;
+      transition:transform .6s cubic-bezier(.25,.46,.45,.94);
+    }
+    .pcard:hover .pcard__img-inner{transform:scale(1.06)}
+    .pcard__emoji{
+      font-size:clamp(60px,10vw,100px);
+      filter:drop-shadow(0 20px 40px rgba(0,0,0,.5));
+    }
+    /* gradient overlay on image */
+    .pcard__img::after{
+      content:'';position:absolute;inset:0;
+      background:linear-gradient(to top,rgba(13,13,13,.9) 0%,rgba(13,13,13,.1) 50%,transparent 100%);
+    }
+    /* Large card variation */
+    .pcard--lg .pcard__img{aspect-ratio:2/3}
+    .pcard--lg .pcard__emoji{font-size:clamp(80px,12vw,140px)}
+
+    /* BADGE */
+    .pcard__badge{
+      position:absolute;top:16px;left:16px;z-index:2;
+      font-size:8px;letter-spacing:.2em;text-transform:uppercase;
+      padding:4px 10px;border-radius:1px;
+    }
+    .badge-novo      {background:rgba(13,13,13,.8);color:var(--gold);border:1px solid rgba(201,168,76,.4)}
+    .badge-sale      {background:var(--rose-dk);color:#fff}
+    .badge-exclusivo {background:var(--gold);color:var(--noir)}
+    .badge-destaque  {background:rgba(250,248,245,.1);color:var(--cream);backdrop-filter:blur(4px)}
+
+    /* WISHLIST */
+    .pcard__wish{
+      position:absolute;top:14px;right:14px;z-index:2;
+      width:32px;height:32px;border-radius:50%;
+      background:rgba(13,13,13,.6);backdrop-filter:blur(4px);
+      display:flex;align-items:center;justify-content:center;
+      font-size:14px;color:rgba(250,248,245,.6);
+      transition:all .2s;border:1px solid rgba(255,255,255,.1);
+    }
+    .pcard__wish:hover{color:var(--rose-dk);border-color:var(--rose-dk);background:rgba(13,13,13,.9)}
+    .pcard__wish.active{color:var(--rose-dk)}
+
+    /* INFO */
+    .pcard__info{
+      position:absolute;bottom:0;left:0;right:0;
+      padding:20px 18px 18px;z-index:2;
+    }
+    .pcard__cat{
+      font-size:8px;letter-spacing:.25em;text-transform:uppercase;
+      color:var(--gold);display:block;margin-bottom:5px;
+    }
+    .pcard__name{
+      font-family:'Playfair Display',serif;
+      font-size:clamp(15px,2vw,19px);font-weight:400;
+      color:var(--cream);line-height:1.2;margin-bottom:8px;
+    }
+    .pcard__price-row{
+      display:flex;align-items:center;gap:8px;
+      margin-bottom:14px;
+    }
+    .pcard__price{
+      font-family:'Cormorant Garamond',serif;
+      font-size:clamp(18px,2.5vw,22px);font-weight:400;
+      color:var(--cream);
+    }
+    .pcard__price-old{
+      font-family:'Cormorant Garamond',serif;
+      font-size:14px;color:rgba(250,248,245,.35);
+      text-decoration:line-through;
+    }
+    .pcard__price-off{
+      font-size:9px;letter-spacing:.1em;
+      background:var(--rose-dk);color:#fff;
+      padding:2px 6px;border-radius:1px;
+    }
+
+    /* QUICK BUY (aparece no hover) */
+    .pcard__actions{
+      display:flex;gap:8px;
+      transform:translateY(8px);opacity:0;
+      transition:all .3s ease;
+    }
+    .pcard:hover .pcard__actions{transform:translateY(0);opacity:1}
+    .pcard__buy{
+      flex:1;font-size:8px;letter-spacing:.2em;text-transform:uppercase;
+      padding:10px;background:var(--gold);color:var(--noir);
+      border-radius:1px;transition:background .2s;text-align:center;
+    }
+    .pcard__buy:hover{background:var(--gold-lt)}
+    .pcard__zap{
+      width:38px;background:rgba(37,211,102,.9);
+      border-radius:1px;font-size:16px;
+      display:flex;align-items:center;justify-content:center;
+      transition:background .2s;
+    }
+    .pcard__zap:hover{background:#25D366}
+
+    /* SIZES */
+    .pcard__sizes{
+      display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px;
+    }
+    .pcard__size{
+      font-size:8px;letter-spacing:.1em;
+      padding:3px 7px;border:1px solid rgba(255,255,255,.12);
+      border-radius:1px;color:rgba(250,248,245,.5);
+      transition:all .15s;cursor:pointer;
+    }
+    .pcard__size:hover{border-color:var(--gold);color:var(--gold)}
+
+    /* ── EDITORIAL STRIP ─────────────────────────────────── */
+    .editorial-strip{
+      display:grid;grid-template-columns:1fr 1fr;
+      min-height:520px;
+    }
+    .editorial-strip__panel{
+      position:relative;padding:60px;
+      display:flex;flex-direction:column;justify-content:flex-end;
+      overflow:hidden;min-height:400px;cursor:pointer;
+    }
+    .editorial-strip__panel-bg{
+      position:absolute;inset:0;
+      transition:transform .6s cubic-bezier(.25,.46,.45,.94);
+    }
+    .editorial-strip__panel:hover .editorial-strip__panel-bg{transform:scale(1.04)}
+    .editorial-strip__panel-overlay{
+      position:absolute;inset:0;
+      background:linear-gradient(to top,rgba(13,13,13,.92) 30%,rgba(13,13,13,.2) 100%);
+    }
+    .editorial-strip__panel>*:not(.editorial-strip__panel-bg):not(.editorial-strip__panel-overlay){
+      position:relative;z-index:1;
+    }
+    .editorial-strip__label{
+      font-size:8px;letter-spacing:.4em;text-transform:uppercase;
+      color:var(--gold);margin-bottom:12px;
+    }
+    .editorial-strip__title{
+      font-family:'Playfair Display',serif;
+      font-size:clamp(28px,4vw,48px);
+      font-weight:400;color:var(--cream);
+      line-height:1.05;margin-bottom:16px;
+    }
+    .editorial-strip__title em{font-style:italic;color:var(--gold)}
+    .editorial-strip__sub{
+      font-family:'Cormorant Garamond',serif;
+      font-size:16px;font-style:italic;font-weight:300;
+      color:rgba(250,248,245,.6);margin-bottom:24px;line-height:1.5;
+    }
+    @media(max-width:768px){
+      .editorial-strip{grid-template-columns:1fr}
+      .editorial-strip__panel{padding:40px 20px}
+    }
+
+    /* ── PROMISE BAR ─────────────────────────────────────── */
+    .promise-bar{
+      display:flex;justify-content:center;gap:0;
+      border-top:1px solid rgba(201,168,76,.08);
+      border-bottom:1px solid rgba(201,168,76,.08);
+    }
+    .promise-item{
+      flex:1;max-width:300px;
+      padding:36px 24px;text-align:center;
+      border-right:1px solid rgba(201,168,76,.08);
+    }
+    .promise-item:last-child{border-right:none}
+    .promise-icon{font-size:24px;margin-bottom:10px}
+    .promise-title{
+      font-size:9px;letter-spacing:.25em;text-transform:uppercase;
+      color:var(--gold);margin-bottom:6px;
+    }
+    .promise-desc{
+      font-family:'Cormorant Garamond',serif;
+      font-size:14px;font-style:italic;font-weight:300;
+      color:rgba(250,248,245,.4);line-height:1.5;
+    }
+    @media(max-width:600px){
+      .promise-bar{flex-wrap:wrap}
+      .promise-item{border-right:none;border-bottom:1px solid rgba(201,168,76,.08)}
+    }
+
+    /* ── LOOKBOOK STRIP ──────────────────────────────────── */
+    .lookbook{
+      padding:80px 40px;
+      text-align:center;
+    }
+    .lookbook__grid{
+      display:grid;
+      grid-template-columns:1fr 2fr 1fr;
+      gap:3px;margin-top:50px;
+    }
+    .lookbook__item{
+      position:relative;overflow:hidden;cursor:pointer;
+    }
+    .lookbook__item-bg{
+      width:100%;
+      display:flex;align-items:center;justify-content:center;
+      transition:transform .5s ease;
+    }
+    .lookbook__item:hover .lookbook__item-bg{transform:scale(1.05)}
+    .lookbook__item-overlay{
+      position:absolute;inset:0;
+      background:rgba(13,13,13,.5);
+      display:flex;align-items:center;justify-content:center;
+      opacity:0;transition:opacity .3s;
+    }
+    .lookbook__item:hover .lookbook__item-overlay{opacity:1}
+    .lookbook__cta{
+      font-size:9px;letter-spacing:.3em;text-transform:uppercase;
+      padding:12px 24px;border:1px solid var(--gold);color:var(--gold);
+      border-radius:1px;
+    }
+    @media(max-width:768px){
+      .lookbook__grid{grid-template-columns:1fr 1fr}
+      .lookbook{padding:60px 20px}
+    }
+
+    /* ── NEWSLETTER ──────────────────────────────────────── */
+    .newsletter{
+      padding:100px 60px;
+      background:linear-gradient(135deg,#2A1009 0%,#1A0A06 50%,#3D1C10 100%);
+      text-align:center;
+      position:relative;overflow:hidden;
+    }
+    .newsletter__logo-bg{
+      position:absolute;top:50%;left:50%;
+      transform:translate(-50%,-50%);
+      width:380px;opacity:.07;pointer-events:none;user-select:none;
+    }
+    .newsletter__label{
+      font-size:8px;letter-spacing:.5em;text-transform:uppercase;
+      color:var(--gold);display:block;margin-bottom:20px;
+    }
+    .newsletter__title{
+      font-family:'Playfair Display',serif;
+      font-size:clamp(32px,5vw,56px);font-weight:400;
+      color:var(--cream);margin-bottom:12px;line-height:1.1;
+    }
+    .newsletter__title em{font-style:italic;color:var(--gold)}
+    .newsletter__sub{
+      font-family:'Cormorant Garamond',serif;
+      font-size:18px;font-style:italic;font-weight:300;
+      color:var(--rose-lt);margin-bottom:40px;
+    }
+    .newsletter__form{
+      display:flex;gap:0;max-width:440px;margin:0 auto;
+      border:1px solid rgba(201,168,76,.3);border-radius:1px;overflow:hidden;
+    }
+    .newsletter__input{
+      flex:1;padding:16px 20px;background:rgba(255,255,255,.06);
+      border:none;outline:none;color:var(--cream);
+      font-family:'Josefin Sans',sans-serif;font-size:12px;font-weight:300;
+    }
+    .newsletter__input::placeholder{color:rgba(250,248,245,.3)}
+    .newsletter__btn{
+      padding:16px 28px;background:var(--gold);color:var(--noir);
+      font-size:9px;letter-spacing:.2em;text-transform:uppercase;
+      transition:background .2s;white-space:nowrap;
+    }
+    .newsletter__btn:hover{background:var(--gold-lt)}
+    @media(max-width:768px){
+      .newsletter{padding:60px 20px}
+      .newsletter__form{flex-direction:column}
+      .newsletter__btn{padding:14px}
+    }
+
+    /* ── FOOTER ──────────────────────────────────────────── */
+    .footer{
+      background:#080808;
+      padding:60px 60px 30px;
+      border-top:1px solid rgba(201,168,76,.08);
+    }
+    .footer__grid{
+      display:grid;grid-template-columns:2fr 1fr 1fr 1fr;
+      gap:60px;margin-bottom:50px;
+    }
+    .footer__logo{
+      font-family:'Playfair Display',serif;
+      font-size:26px;font-weight:900;color:var(--cream);
+      margin-bottom:4px;
+    }
+    .footer__logo span{color:var(--gold)}
+    .footer__tagline{
+      font-size:8px;letter-spacing:.35em;text-transform:uppercase;
+      color:rgba(201,168,76,.5);margin-bottom:20px;
+    }
+    .footer__desc{
+      font-family:'Cormorant Garamond',serif;
+      font-size:15px;font-weight:300;font-style:italic;
+      color:rgba(250,248,245,.35);line-height:1.7;max-width:260px;
+      margin-bottom:24px;
+    }
+    .footer__social{display:flex;gap:12px}
+    .footer__soc{
+      width:34px;height:34px;border:1px solid rgba(201,168,76,.2);
+      border-radius:50%;display:flex;align-items:center;justify-content:center;
+      font-size:14px;color:rgba(250,248,245,.4);transition:all .2s;
+    }
+    .footer__soc:hover{border-color:var(--gold);color:var(--gold)}
+    .footer__col-title{
+      font-size:8px;letter-spacing:.35em;text-transform:uppercase;
+      color:var(--gold);margin-bottom:20px;
+    }
+    .footer__links{display:flex;flex-direction:column;gap:12px}
+    .footer__link{
+      font-size:12px;font-weight:300;color:rgba(250,248,245,.35);
+      transition:color .2s;
+    }
+    .footer__link:hover{color:var(--gold-lt)}
+    .footer__bottom{
+      border-top:1px solid rgba(255,255,255,.05);
+      padding-top:24px;
+      display:flex;align-items:center;justify-content:space-between;
+      gap:16px;flex-wrap:wrap;
+    }
+    .footer__copy{
+      font-size:9px;letter-spacing:.15em;color:rgba(250,248,245,.2);
+      text-transform:uppercase;
+    }
+    .footer__copy a{color:rgba(201,168,76,.5);transition:color .2s}
+    .footer__copy a:hover{color:var(--gold)}
+    @media(max-width:768px){
+      .footer{padding:40px 20px 24px}
+      .footer__grid{grid-template-columns:1fr 1fr;gap:32px}
+    }
+    @media(max-width:480px){
+      .footer__grid{grid-template-columns:1fr}
+    }
+
+    /* ── WHATSAPP FLOAT ──────────────────────────────────── */
+    @keyframes wfloat-pulse{
+      0%,100%{box-shadow:0 8px 32px rgba(37,211,102,.35),0 0 0 0 rgba(37,211,102,.4)}
+      50%{box-shadow:0 8px 32px rgba(37,211,102,.35),0 0 0 10px rgba(37,211,102,0)}
+    }
+    .wfloat{
+      position:fixed;bottom:28px;right:28px;z-index:200;
+      display:flex;align-items:center;gap:10px;
+      background:#25D366;color:#fff;
+      padding:12px 20px 12px 16px;border-radius:40px;
+      box-shadow:0 8px 32px rgba(37,211,102,.35);
+      font-size:9px;letter-spacing:.15em;text-transform:uppercase;
+      transition:transform .25s,box-shadow .25s,padding .25s,gap .25s;
+      animation:wfloat-pulse 2.5s ease-in-out infinite;
+      white-space:nowrap;overflow:hidden;
+    }
+    .wfloat:hover,.wfloat:focus{
+      transform:scale(1.08) translateY(-2px);
+      box-shadow:0 16px 48px rgba(37,211,102,.55);
+      animation:none;
+    }
+    .wfloat__text{
+      font-size:9px;letter-spacing:.15em;text-transform:uppercase;
+      transition:max-width .3s ease, opacity .3s ease;
+    }
+    /* Mobile: só ícone, expande ao toque via JS */
+    @media(max-width:600px){
+      .wfloat{padding:14px;bottom:20px;right:16px;border-radius:50%;}
+      .wfloat__text{max-width:0;opacity:0;overflow:hidden;pointer-events:none}
+      .wfloat.expanded{
+        border-radius:40px;padding:14px 20px 14px 14px;gap:10px;
+      }
+      .wfloat.expanded .wfloat__text{max-width:200px;opacity:1}
+    }
+
+    /* ── MODAL QUICK VIEW ────────────────────────────────── */
+    .qv-overlay{
+      position:fixed;inset:0;z-index:500;
+      background:rgba(8,8,8,.9);backdrop-filter:blur(8px);
+      display:none;align-items:center;justify-content:center;padding:20px;
+    }
+    .qv-overlay.open{display:flex}
+    .qv-modal{
+      background:#141414;border:1px solid rgba(201,168,76,.15);
+      border-radius:2px;max-width:700px;width:100%;
+      max-height:90vh;overflow-y:auto;
+      display:grid;grid-template-columns:1fr 1fr;
+    }
+    .qv-img{
+      display:flex;align-items:center;justify-content:center;
+      min-height:360px;font-size:100px;
+      background:linear-gradient(145deg,#2A1009,#1A0A06);
+    }
+    .qv-body{padding:36px 30px;display:flex;flex-direction:column;justify-content:space-between}
+    .qv-close{
+      position:absolute;top:16px;right:20px;
+      font-size:24px;color:rgba(250,248,245,.4);
+      background:none;border:none;cursor:pointer;transition:color .2s;
+    }
+    .qv-close:hover{color:var(--gold)}
+    .qv-cat{font-size:8px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:10px}
+    .qv-name{font-family:'Playfair Display',serif;font-size:28px;font-weight:400;color:var(--cream);margin-bottom:8px;line-height:1.15}
+    .qv-desc{font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;font-weight:300;color:rgba(250,248,245,.5);line-height:1.6;margin-bottom:20px}
+    .qv-price{font-family:'Cormorant Garamond',serif;font-size:32px;color:var(--cream);margin-bottom:20px}
+    .qv-size-title{font-size:8px;letter-spacing:.25em;text-transform:uppercase;color:var(--gold-dk);margin-bottom:10px}
+    .qv-sizes{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px}
+    .qv-size{
+      font-size:10px;padding:7px 14px;
+      border:1px solid rgba(255,255,255,.12);color:rgba(250,248,245,.5);
+      border-radius:1px;cursor:pointer;transition:all .15s;
+    }
+    .qv-size:hover,.qv-size.sel{border-color:var(--gold);color:var(--gold)}
+    .qv-actions{display:flex;flex-direction:column;gap:10px}
+    @media(max-width:600px){
+      .qv-modal{grid-template-columns:1fr}
+      .qv-img{min-height:220px}
+    }
+
+    /* ── EMPTY STATE ─────────────────────────────────────── */
+    .empty-state{
+      text-align:center;padding:100px 40px;
+      display:none;
+    }
+    .empty-state.show{display:block}
+    .empty-state__icon{font-size:48px;margin-bottom:16px}
+    .empty-state__title{
+      font-family:'Playfair Display',serif;font-size:28px;font-weight:400;
+      color:var(--cream);margin-bottom:8px;
+    }
+    .empty-state__sub{
+      font-family:'Cormorant Garamond',serif;font-size:16px;
+      font-style:italic;color:rgba(250,248,245,.4);margin-bottom:24px;
+    }
+
+    /* ── ANIMATIONS ──────────────────────────────────────── */
+    @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .fade-up{opacity:0;animation:fadeUp .7s ease forwards}
+    .fade-up-1{animation-delay:.1s}
+    .fade-up-2{animation-delay:.2s}
+    .fade-up-3{animation-delay:.35s}
+    .fade-up-4{animation-delay:.5s}
+  
+    /* ══════════════════════════════════════════════════════════
+       MOBILE — revisao completa
+    ══════════════════════════════════════════════════════════ */
+
+    /* Navbar mobile: hamburger + menu drawer */
+    .nav__hamburger{
+      display:none;flex-direction:column;gap:5px;
+      background:none;border:none;cursor:pointer;padding:4px;
+    }
+    .nav__hamburger span{
+      display:block;width:22px;height:1px;
+      background:rgba(250,248,245,.7);transition:all .3s;
+    }
+    @media(max-width:768px){
+      .nav__hamburger{display:flex}
+      .nav__links{
+        display:none;position:fixed;top:70px;left:0;right:0;
+        background:rgba(13,13,13,.98);backdrop-filter:blur(12px);
+        flex-direction:column;gap:0;padding:12px 0 20px;
+        border-bottom:1px solid rgba(201,168,76,.15);z-index:99;
+      }
+      .nav__links.open{display:flex}
+      .nav__link{
+        padding:14px 24px;font-size:10px;letter-spacing:.3em;
+        border-bottom:1px solid rgba(201,168,76,.06);
+      }
+    }
+
+    /* Hero mobile */
+    @media(max-width:768px){
+      .hero{
+        padding:80px 24px 48px;
+        min-height:auto;height:auto;
+        align-items:flex-start;
+        padding-top:100px;
+      }
+      .hero__title{font-size:clamp(36px,10vw,56px);line-height:.95}
+      .hero__sub{font-size:15px;margin-bottom:28px}
+      .hero__scroll{display:none}
+      .hero__cta{flex-direction:column;gap:10px;max-width:100%}
+      .btn-solid,.btn-border{text-align:center;padding:15px 24px;display:block}
+    }
+    @media(max-width:390px){
+      .hero{padding-top:88px;padding-bottom:40px}
+      .hero__title{font-size:32px}
+      .hero__label{margin-bottom:16px}
+    }
+
+    /* Filter strip mobile — scroll horizontal */
+    @media(max-width:768px){
+      .filter-inner{height:auto;padding:10px 0;flex-direction:column;align-items:flex-start;gap:10px}
+      .filter-cats{
+        overflow-x:auto;white-space:nowrap;width:100%;
+        -webkit-overflow-scrolling:touch;
+        scrollbar-width:none;padding-bottom:4px;
+      }
+      .filter-cats::-webkit-scrollbar{display:none}
+      .filter-btn{padding:8px 14px;font-size:8px}
+      .filter-right{width:100%;justify-content:flex-end}
+      .filter-count{font-size:8px}
+    }
+
+    /* Products section mobile */
+    @media(max-width:768px){
+      .products-section{padding:40px 16px 60px}
+      .section-header{margin-bottom:30px}
+    }
+
+    /* Editorial intro mobile */
+    @media(max-width:480px){
+      .editorial-intro{padding:40px 16px;gap:28px}
+    }
+
+    /* Promise bar mobile */
+    @media(max-width:480px){
+      .promise-bar{padding:20px 16px}
+      .promise-item{padding:16px 10px;font-size:7px}
+    }
+
+    /* Cards mobile — 2 colunas mesmo em telas muito pequenas */
+    @media(max-width:360px){
+      .grid{grid-template-columns:1fr}
+    }
+
+    /* Footer mobile */
+    @media(max-width:480px){
+      .footer__grid{grid-template-columns:1fr}
+      .footer{padding:40px 16px 20px}
+    }
+
+    /* WA float mobile — menor e sem texto */
+    @media(max-width:480px){
+    }
+
+    /* Quick view modal mobile */
+    @media(max-width:480px){
+      .qv-modal{width:95vw;padding:20px;grid-template-columns:1fr}
+      .qv-img{min-height:200px}
+      .qv-body{padding:20px 0 0}
+    }
+
+    /* Newsletter mobile */
+    @media(max-width:480px){
+      .newsletter{padding:50px 16px}
+      .newsletter__form{flex-direction:column;border:none;gap:8px}
+      .newsletter__input{
+        border:1px solid rgba(201,168,76,.3);border-radius:1px;
+        padding:14px 16px;
+      }
+      .newsletter__btn{padding:14px;border-radius:1px}
+    }
+
+    /* Logo na navbar mobile */
+    @media(max-width:480px){
+      .nav__logo img{height:34px}
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- ══ NAVBAR ═══════════════════════════════════════════════ -->
+<nav class="nav" id="navbar">
+  <a href="index.html" class="nav__logo">
+    <img src="assets/logo/logo-modas-ge.png" alt="Modas GE" style="height:42px;width:auto;object-fit:contain;filter:brightness(1.05);">
+  </a>
+  <div class="nav__links" id="navLinks">
+    <a href="catalogo.html?cat=todos" class="nav__link active" onclick="setFilter('todos',this)">Todos</a>
+    <a href="#" class="nav__link" onclick="setFilter('conjunto',this)">Conjuntos</a>
+    <a href="#" class="nav__link" onclick="setFilter('sutia',this)">Sutiã</a>
+    <a href="#" class="nav__link" onclick="setFilter('calcinha',this)">Calcinha</a>
+    <a href="#" class="nav__link" onclick="setFilter('pijama',this)">Pijama</a>
+    <a href="#" class="nav__link" onclick="setFilter('camisola',this)">Camisola</a>
+  </div>
+  <button class="nav__hamburger" id="menuBtn" aria-label="Menu" onclick="document.getElementById('navLinks').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav__actions">
+    <span class="nav__icon" title="Buscar" onclick="document.querySelector('.filter-search input').focus()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="6.5" cy="6.5" r="4.5"/><line x1="10.5" y1="10.5" x2="14" y2="14"/></svg>
+    </span>
+    <span class="nav__icon" title="Favoritos" id="navWish">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 13.5S2 9.5 2 5.5A3.5 3.5 0 0 1 8 4a3.5 3.5 0 0 1 6 1.5c0 4-6 8-6 8z"/></svg>
+    </span>
+    <a href="https://wa.me/553197873881" class="nav__whatsapp" target="_blank">WhatsApp ✦</a>
+  </div>
+</nav>
+
+<!-- ══ HERO ══════════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero__bg"></div>
+  <div class="hero__ornament"><img src="assets/logo/logo-modas-ge.png" alt="" style="width:min(70vw,600px);height:auto;object-fit:contain;pointer-events:none;user-select:none;"></div>
+  <div class="hero__content">
+    <span class="hero__label fade-up fade-up-1">Coleção 2026 — Moda Íntima</span>
+    <h1 class="hero__title fade-up fade-up-2">
+      A arte<br>de <em>se sentir</em><br>poderosa
+    </h1>
+    <p class="hero__sub fade-up fade-up-3">
+      Cada peça criada para despertar o que há de mais elegante em você.
+    </p>
+    <div class="hero__cta fade-up fade-up-4">
+      <a href="#colecao" class="btn-solid">Explorar a Coleção</a>
+      <a href="https://wa.me/553197873881" class="btn-border" target="_blank">Fale Conosco</a>
+    </div>
+  </div>
+  <div class="hero__scroll">
+    <div class="hero__scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ══ PROMISE BAR ════════════════════════════════════════════ -->
+<div class="promise-bar">
+  <div class="promise-item">
+    <div class="promise-icon">
+      <svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="#C9A84C" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13,2 16,9 24,10 18,16 20,24 13,20 6,24 8,16 2,10 10,9"/></svg>
+    </div>
+    <div class="promise-title">Qualidade Premium</div>
+    <div class="promise-desc">Tecidos selecionados com carinho</div>
+  </div>
+  <div class="promise-item">
+    <div class="promise-icon">
+      <svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="#C9A84C" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="8" width="16" height="9" rx="1"/><path d="M18 11h4l2 5H18"/><circle cx="7" cy="20" r="1.5"/><circle cx="17" cy="20" r="1.5"/></svg>
+    </div>
+    <div class="promise-title">Entrega Rápida</div>
+    <div class="promise-desc">Frete grátis acima de R$ 299</div>
+  </div>
+  <div class="promise-item">
+    <div class="promise-icon">
+      <svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="#C9A84C" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13,3 16,10 24,10 18,15 20,23 13,18 6,23 8,15 2,10 10,10"/><circle cx="13" cy="13" r="4" stroke-width="0.8" stroke-dasharray="2,2"/></svg>
+    </div>
+    <div class="promise-title">Exclusividade</div>
+    <div class="promise-desc">Pecas com curadoria especial</div>
+  </div>
+
+</div>
+
+<!-- ══ EDITORIAL INTRO ════════════════════════════════════════ -->
+<section class="editorial-intro">
+  <div>
+    <h2 class="editorial-intro__quote">
+      "Elegancia nao e ser notada, e ser <span>lembrada</span>"
+    </h2>
+  </div>
+  <div class="editorial-intro__text">
+    <p>A Modas GE Langery nasceu da crenca de que cada mulher merece se sentir extraordinaria. Nossas pecas sao escolhidas com atencao aos detalhes.</p>
+    <div class="editorial-intro__divider"></div>
+    <p>Tecidos que abracam, rendas que encantam, cortes que valorizam. Porque a roupa intima que voce escolhe e a primeira declaracao de amor que voce faz a si mesma.</p>
+  </div>
+</section>
+
+<!-- ══ FILTER STRIP ═══════════════════════════════════════════ -->
+<div class="filter-strip" id="colecao">
+  <div class="filter-inner">
+    <div class="filter-cats">
+      <button class="filter-btn active" onclick="setFilter('todos',this)">Todos</button>
+      <button class="filter-btn" onclick="setFilter('conjunto',this)">Conjuntos</button>
+      <button class="filter-btn" onclick="setFilter('sutia',this)">Sutia</button>
+      <button class="filter-btn" onclick="setFilter('calcinha',this)">Calcinha</button>
+      <button class="filter-btn" onclick="setFilter('pijama',this)">Pijama</button>
+      <button class="filter-btn" onclick="setFilter('camisola',this)">Camisola</button>
+    </div>
+    <div class="filter-right">
+      <span class="filter-count" id="filterCount">— pecas</span>
+      <div class="filter-search">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="rgba(250,248,245,.3)" stroke-width="1.5" stroke-linecap="round"><circle cx="5.5" cy="5.5" r="4"/><line x1="9" y1="9" x2="12" y2="12"/></svg>
+        <input type="text" placeholder="Buscar..." id="searchInput" oninput="renderProducts()">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PRODUCTS ════════════════════════════════════════════════ -->
+<section class="products-section">
+  <div class="section-header">
+    <div>
+      <span class="section-eyebrow">Colecao Exclusiva</span>
+      <h2 class="section-title" id="sectionTitle">Toda a <em>Colecao</em></h2>
+    </div>
+    <a href="https://wa.me/553197873881" class="see-all" target="_blank">Pedir pelo WhatsApp</a>
+  </div>
+  <div class="grid" id="productsGrid"></div>
+  <div class="empty-state" id="emptyState">
+    <div class="empty-state__icon">
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#C9A84C" stroke-width="1.2" stroke-linecap="round"><circle cx="24" cy="24" r="20"/><path d="M24 16 Q28 20 24 28 Q20 20 24 16Z"/><path d="M16 24 Q20 28 28 24 Q20 20 16 24Z"/></svg>
+    </div>
+    <h3 class="empty-state__title">Nenhuma peca encontrada</h3>
+    <p class="empty-state__sub">Tente outro termo ou explore todas as categorias</p>
+    <button class="btn-solid" onclick="setFilter('todos',null)" style="display:inline-block">Ver todas as pecas</button>
+  </div>
+</section>
+
+<!-- ══ EDITORIAL STRIP ════════════════════════════════════════ -->
+<div class="editorial-strip">
+  <div class="editorial-strip__panel" onclick="setFilter('conjunto',null);document.getElementById('colecao').scrollIntoView({behavior:'smooth'})">
+    <div class="editorial-strip__panel-bg" style="background:linear-gradient(145deg,#B07D75 0%,#3D1C10 100%);display:flex;align-items:center;justify-content:center">
+      <svg width="120" height="120" viewBox="0 0 120 120" fill="none" stroke="rgba(201,168,76,0.4)" stroke-width="1.2" stroke-linecap="round"><path d="M30 50 Q40 30 60 35 Q80 30 90 50 L85 90 Q60 100 35 90 Z"/><path d="M35 55 Q60 45 85 55"/></svg>
+    </div>
+    <div class="editorial-strip__panel-overlay"></div>
+    <div class="editorial-strip__label">Linha Premium</div>
+    <h3 class="editorial-strip__title">Conjuntos<br><em>Exclusivos</em></h3>
+    <p class="editorial-strip__sub">Sutia + calcinha que foram feitos um para o outro</p>
+    <span class="btn-solid" style="display:inline-block">Ver Conjuntos</span>
+  </div>
+  <div class="editorial-strip__panel" onclick="setFilter('pijama',null);document.getElementById('colecao').scrollIntoView({behavior:'smooth'})">
+    <div class="editorial-strip__panel-bg" style="background:linear-gradient(145deg,#EDD8D4 0%,#B07D75 100%);display:flex;align-items:center;justify-content:center">
+      <svg width="120" height="120" viewBox="0 0 120 120" fill="none" stroke="rgba(61,28,16,0.45)" stroke-width="1.2" stroke-linecap="round"><path d="M70 25 Q90 45 80 70 Q70 90 45 88 Q55 65 50 45 Q60 30 70 25Z"/><circle cx="90" cy="30" r="3" fill="rgba(61,28,16,0.3)" stroke="none"/><circle cx="80" cy="18" r="2" fill="rgba(61,28,16,0.2)" stroke="none"/></svg>
+    </div>
+    <div class="editorial-strip__panel-overlay"></div>
+    <div class="editorial-strip__label">Noites Especiais</div>
+    <h3 class="editorial-strip__title">Pijamas &<br><em>Camisolas</em></h3>
+    <p class="editorial-strip__sub">Para noites de conforto e elegancia</p>
+    <span class="btn-border" style="display:inline-block">Ver Colecao</span>
+  </div>
+</div>
+
+<!-- ══ NEWSLETTER ═════════════════════════════════════════════ -->
+<section class="newsletter">
+  <img src="assets/logo/logo-modas-ge.png" alt="" class="newsletter__logo-bg">
+  <span class="newsletter__label">Clube Modas GE</span>
+  <h2 class="newsletter__title">Receba as novidades<br><em>em primeira mao</em></h2>
+  <p class="newsletter__sub">Lancamentos exclusivos, promocoes e tendencias direto para voce</p>
+  <form class="newsletter__form" onsubmit="handleNewsletter(event)">
+    <input type="email" class="newsletter__input" placeholder="Seu melhor e-mail" required>
+    <button type="submit" class="newsletter__btn">Assinar &#10022;</button>
+  </form>
+</section>
+
+<!-- ══ FOOTER ═════════════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="footer__grid">
+    <div>
+      <div class="footer__logo"><img src="assets/logo/logo-modas-ge.png" alt="Modas GE" style="height:36px;width:auto;object-fit:contain;filter:brightness(0.9) sepia(0.2);"></div>
+      <div class="footer__tagline">Langery &amp; Moda Intima</div>
+      <p class="footer__desc">Vestindo mulheres com elegancia, delicadeza e muito amor pelos detalhes.</p>
+      <div class="footer__social">
+        <a href="https://www.instagram.com/modasge.lingery/" class="footer__soc" title="Instagram" target="_blank"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><rect x="1" y="1" width="12" height="12" rx="3"/><circle cx="7" cy="7" r="3"/><circle cx="10.5" cy="3.5" r="0.5" fill="currentColor" stroke="none"/></svg></a>
+        <a href="#" class="footer__soc" title="Facebook"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M8 2H6a2 2 0 0 0-2 2v2H2v3h2v5h3V9h2l1-3H7V4a1 1 0 0 1 1-1Z"/></svg></a>
+        <a href="https://wa.me/553197873881" class="footer__soc" title="WhatsApp" target="_blank"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 1a9 9 0 1 1-7.6 13.8L1 19l4.2-1.4A9 9 0 0 1 10 1z"/><path d="M7.5 7.5c.2.9.7 1.8 1.5 2.5.7.7 1.6 1.3 2.5 1.5l.5-.5c.3-.3.7-.4 1-.1.5.3 1.1.6 1.5 1 .2.3 0 .9-.5 1.3-.9 1-2.5 1.3-4.2.4C7.8 12.7 6 10.8 5.4 9c-.9-1.7-.6-3.3.4-4.2.4-.5 1-.7 1.3-.5.4.4.7 1 1 1.5.3.3.2.7-.1 1Z"/></svg></a>
+        <a href="#" class="footer__soc" title="TikTok"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M9 1v8a3 3 0 1 1-3-3"/><path d="M9 3a3 3 0 0 0 3 3"/></svg></a>
+      </div>
+    </div>
+    <div>
+      <div class="footer__col-title">Colecao</div>
+      <nav class="footer__links">
+        <a class="footer__link" href="#" onclick="setFilter('conjunto',null)">Conjuntos</a>
+        <a class="footer__link" href="#" onclick="setFilter('sutia',null)">Sutia</a>
+        <a class="footer__link" href="#" onclick="setFilter('calcinha',null)">Calcinha</a>
+        <a class="footer__link" href="#" onclick="setFilter('pijama',null)">Pijamas</a>
+        <a class="footer__link" href="#" onclick="setFilter('camisola',null)">Camisolas</a>
+      </nav>
+    </div>
+    <div>
+      <div class="footer__col-title">Atendimento</div>
+      <nav class="footer__links">
+        <a href="https://wa.me/553197873881" class="footer__link" target="_blank">WhatsApp</a>
+        <a href="#" class="footer__link">Guia de Tamanhos</a>
+        <a href="#" class="footer__link">Politica de Troca</a>
+        <a href="#" class="footer__link">Rastrear Pedido</a>
+      </nav>
+    </div>
+    <div>
+      <div class="footer__col-title">Institucional</div>
+      <nav class="footer__links">
+        <a href="#" class="footer__link">Sobre Nos</a>
+        <a href="#" class="footer__link">Nossa Historia</a>
+        <a href="#" class="footer__link">Privacidade</a>
+        <a href="index.html" class="footer__link">Home</a>
+      </nav>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <p class="footer__copy">&#169; 2026 Modas GE Langery. Todos os direitos reservados.</p>
+    <p class="footer__copy">Desenvolvido com &#9825; por <a href="#">ELEVARIA</a></p>
+  </div>
+</footer>
+
+<!-- WhatsApp Float -->
+<a href="https://wa.me/553197873881" class="wfloat" id="wfloat" target="_blank">
+  <svg width="22" height="22" viewBox="0 0 20 20" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 1a9 9 0 1 1-7.6 13.8L1 19l4.2-1.4A9 9 0 0 1 10 1z"/><path d="M7.5 7.5c.2.9.7 1.8 1.5 2.5.7.7 1.6 1.3 2.5 1.5l.5-.5c.3-.3.7-.4 1-.1.5.3 1.1.6 1.5 1 .2.3 0 .9-.5 1.3-.9 1-2.5 1.3-4.2.4C7.8 12.7 6 10.8 5.4 9c-.9-1.7-.6-3.3.4-4.2.4-.5 1-.7 1.3-.5.4.4.7 1 1 1.5.3.3.2.7-.1 1Z"/></svg>
+  <span class="wfloat__text">Comprar pelo WhatsApp</span>
+</a>
+<script>
+(function(){
+  var btn = document.getElementById('wfloat');
+  if(!btn) return;
+  btn.addEventListener('touchstart', function(e){
+    if(window.innerWidth <= 600){
+      if(!btn.classList.contains('expanded')){
+        e.preventDefault();
+        btn.classList.add('expanded');
+        setTimeout(function(){ btn.classList.remove('expanded'); }, 3000);
+      }
+    }
+  }, {passive:false});
+})();
+</script>
+
+<!-- Quick View Modal -->
+<div class="qv-overlay" id="qvOverlay">
+  <div class="qv-modal" id="qvModal" style="position:relative">
+    <button class="qv-close" onclick="closeQV()">&#10005;</button>
+    <div class="qv-img" id="qvImg"></div>
+    <div class="qv-body" id="qvBody"></div>
+  </div>
+</div>
+
+<!-- ══ SCRIPTS ════════════════════════════════════════════════ -->
+<script src="js/products.js"></script>
+<script>
+const SVG_ICONS = {
+  conjunto: '<svg width="90" height="90" viewBox="0 0 90 90" fill="none" stroke="rgba(201,168,76,0.45)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 38 Q30 22 45 28 Q60 22 70 38 L66 72 Q45 82 24 72 Z"/><path d="M24 43 Q45 34 66 43"/><ellipse cx="45" cy="32" rx="11" ry="7" stroke-opacity="0.3"/></svg>',
+  sutia: '<svg width="90" height="90" viewBox="0 0 90 90" fill="none" stroke="rgba(201,168,76,0.45)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 50 Q25 28 45 32"/><path d="M75 50 Q65 28 45 32"/><path d="M15 50 Q30 65 45 55 Q60 65 75 50"/><line x1="45" y1="32" x2="45" y2="55"/></svg>',
+  calcinha: '<svg width="90" height="90" viewBox="0 0 90 90" fill="none" stroke="rgba(201,168,76,0.45)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 28 Q25 24 45 24 Q65 24 72 28"/><path d="M18 28 Q22 50 45 72 Q68 50 72 28"/></svg>',
+  pijama: '<svg width="90" height="90" viewBox="0 0 90 90" fill="none" stroke="rgba(201,168,76,0.45)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M58 18 Q72 32 68 52 Q62 72 40 72 Q22 70 18 52 Q14 32 32 18"/><path d="M32 18 Q42 26 58 18"/><circle cx="68" cy="22" r="4" fill="rgba(201,168,76,0.2)"/></svg>',
+  camisola: '<svg width="90" height="90" viewBox="0 0 90 90" fill="none" stroke="rgba(201,168,76,0.45)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M33 14 Q45 10 57 14"/><path d="M33 14 L20 30 L28 33 L26 78 Q45 82 64 78 L62 33 L70 30 L57 14"/><path d="M28 33 Q45 28 62 33"/></svg>',
+};
+
+const CATALOG = [
+  {id:1,name:'Conjunto Renda Noite',cat:'conjunto',catLabel:'Conjunto',price:189.90,priceOld:249.90,badge:'sale',desc:'Conjunto sutia e calcinha em renda francesa.',sizes:['P','M','G','GG'],cores:['Preto','Vinho','Nude'],featured:true},
+  {id:2,name:'Conjunto Premium Cetim',cat:'conjunto',catLabel:'Conjunto',price:219.90,priceOld:null,badge:'exclusivo',desc:'Cetim italiano com bordado artesanal.',sizes:['PP','P','M','G'],cores:['Champagne','Rosa','Preto'],featured:true},
+  {id:3,name:'Conjunto Romantico Floral',cat:'conjunto',catLabel:'Conjunto',price:149.90,priceOld:null,badge:'novo',desc:'Conjunto com estampa floral bordada.',sizes:['P','M','G','GG'],cores:['Branco/Rose','Preto/Dourado'],featured:true},
+  {id:4,name:'Conjunto Bodies Tule',cat:'conjunto',catLabel:'Conjunto',price:279.90,priceOld:380.00,badge:'sale',desc:'Body em tule com calcinha de renda.',sizes:['P','M','G'],cores:['Preto','Nude Escuro'],featured:false},
+  {id:5,name:'Sutia Bojo Rendado',cat:'sutia',catLabel:'Sutia',price:89.90,priceOld:119.90,badge:'sale',desc:'Bojo com renda delicada, regulagem de alca.',sizes:['34A','34B','36A','36B','36C','38B','38C'],cores:['Preto','Nude','Rose','Vinho'],featured:true},
+  {id:6,name:'Sutia Sem Aro Premium',cat:'sutia',catLabel:'Sutia',price:99.90,priceOld:null,badge:'novo',desc:'Sem aro com bojo em espuma. Conforto e sustentacao.',sizes:['P','M','G','GG'],cores:['Preto','Nude','Branco'],featured:true},
+  {id:7,name:'Sutia Triangular Renda',cat:'sutia',catLabel:'Sutia',price:79.90,priceOld:null,badge:null,desc:'Triangular sem bojo. Renda italiana com acabamento premium.',sizes:['PP','P','M','G'],cores:['Rose','Branco','Preto'],featured:false},
+  {id:8,name:'Calcinha Fio Dental Luxo',cat:'calcinha',catLabel:'Calcinha',price:49.90,priceOld:69.90,badge:'sale',desc:'Fio dental em renda com laco cetim.',sizes:['PP','P','M','G','GG'],cores:['Preto','Nude','Rose','Vinho','Branco'],featured:true},
+  {id:9,name:'Calcinha Hot Pants Renda',cat:'calcinha',catLabel:'Calcinha',price:59.90,priceOld:null,badge:'novo',desc:'Hot pants em renda com elastico invisivel.',sizes:['P','M','G','GG'],cores:['Preto','Rose','Bege'],featured:true},
+  {id:10,name:'Calcinha Biquini Premium',cat:'calcinha',catLabel:'Calcinha',price:44.90,priceOld:null,badge:null,desc:'Biquini em microfibra com renda.',sizes:['PP','P','M','G','GG'],cores:['Nude','Preto','Rose','Branco','Vinho'],featured:false},
+  {id:11,name:'Kit 3 Calcinhas Basicas',cat:'calcinha',catLabel:'Calcinha',price:99.90,priceOld:149.90,badge:'exclusivo',desc:'Kit com 3 calcinhas em cores basicas.',sizes:['PP','P','M','G','GG'],cores:['Kit Neutros','Kit Tons Rose','Kit Pretos'],featured:true},
+  {id:12,name:'Pijama Cetim Longo',cat:'pijama',catLabel:'Pijama',price:189.90,priceOld:239.90,badge:'sale',desc:'Pijama manga longa e calca em cetim.',sizes:['P','M','G','GG'],cores:['Champagne','Preto','Rosa Antigo'],featured:true},
+  {id:13,name:'Conjunto Pijama Short',cat:'pijama',catLabel:'Pijama',price:139.90,priceOld:null,badge:'novo',desc:'Short + blusa de alca em cetim.',sizes:['P','M','G','GG'],cores:['Rose','Champagne','Preto','Lilas'],featured:true},
+  {id:14,name:'Pijama Floral Premium',cat:'pijama',catLabel:'Pijama',price:169.90,priceOld:null,badge:null,desc:'Estampa floral suave em viscose macia.',sizes:['P','M','G','GG','XG'],cores:['Floral Rose','Floral Azul','Floral Verde'],featured:false},
+  {id:15,name:'Camisola Maxi Luxo',cat:'camisola',catLabel:'Camisola',price:159.90,priceOld:199.90,badge:'sale',desc:'Camisola longa em chiffon com detalhes em renda.',sizes:['P','M','G','GG'],cores:['Champagne','Rosa','Branco Puro','Preto'],featured:true},
+  {id:16,name:'Baby Doll Renda',cat:'camisola',catLabel:'Camisola',price:119.90,priceOld:null,badge:'exclusivo',desc:'Baby doll em renda com calcinha combinando.',sizes:['PP','P','M','G'],cores:['Preto','Rose','Vinho'],featured:true},
+  {id:17,name:'Camisola Romantica',cat:'camisola',catLabel:'Camisola',price:99.90,priceOld:null,badge:'novo',desc:'Camisola curta em cetim com bordado floral.',sizes:['P','M','G','GG'],cores:['Branco','Rose','Champagne'],featured:true},
+];
+
+let activeFilter = 'todos';
+let wishlist = JSON.parse(localStorage.getItem('mg_wish') || '[]');
+
+function setFilter(cat, btn) {
+  activeFilter = cat;
+  document.querySelectorAll('.filter-btn, .nav__link').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  const titles = {todos:'Toda a',conjunto:'Conjuntos',sutia:'Sutia',calcinha:'Calcinha',pijama:'Pijamas',camisola:'Camisolas'};
+  const ems = {todos:'Colecao',conjunto:'Exclusivos',sutia:'Premium',calcinha:'Delicadas',pijama:'& Conforto',camisola:'Romanticas'};
+  document.getElementById('sectionTitle').innerHTML = (titles[cat]||cat) + ' <em>'+(ems[cat]||'')+'</em>';
+  renderProducts();
+  document.getElementById('colecao').scrollIntoView({behavior:'smooth'});
+}
+
+function getFiltered() {
+  var SOURCE = (window.PRODUCTS && window.PRODUCTS.length > 0) ? window.PRODUCTS : CATALOG;
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  return SOURCE.filter(p => {
+    const catOk = activeFilter === 'todos' || p.cat === activeFilter;
+    const searchOk = !q || p.name.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q);
+    return catOk && searchOk;
+  });
+}
+
+function renderProducts() {
+  const products = getFiltered();
+  const grid = document.getElementById('productsGrid');
+  const empty = document.getElementById('emptyState');
+  const count = document.getElementById('filterCount');
+  count.textContent = products.length + (products.length === 1 ? ' peca' : ' pecas');
+  if (products.length === 0) { grid.innerHTML = ''; empty.classList.add('show'); return; }
+  empty.classList.remove('show');
+  const badgeHtml = p => {
+    if (!p.badge) return '';
+    const map = {
+      novo:'<span class="pcard__badge badge-novo">Novo</span>',
+      sale:'<span class="pcard__badge badge-sale">Sale '+(p.priceOld?'-'+Math.round((1-p.price/p.priceOld)*100)+'%':'')+'</span>',
+      exclusivo:'<span class="pcard__badge badge-exclusivo">Exclusivo</span>',
+    };
+    return map[p.badge] || '';
+  };
+  const gradients = {
+    conjunto:'linear-gradient(145deg,#B07D75 0%,#3D1C10 100%)',
+    sutia:'linear-gradient(145deg,#D4A8A0 0%,#B07D75 100%)',
+    calcinha:'linear-gradient(145deg,#EDD8D4 0%,#D4A8A0 100%)',
+    pijama:'linear-gradient(145deg,#2C2C2C 0%,#0D0D0D 100%)',
+    camisola:'linear-gradient(145deg,#3D1C10 0%,#1A0A06 100%)',
+  };
+  const isLg = (i) => activeFilter === 'todos' && (i === 0 || i === 5);
+  grid.innerHTML = products.map((p, i) => {
+    const lg = isLg(i);
+    const wActive = wishlist.includes(p.id) ? 'active' : '';
+    const wIcon = wishlist.includes(p.id)
+      ? '<svg width="14" height="14" viewBox="0 0 16 16" fill="#C9A84C" stroke="#C9A84C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 13.5S2 9.5 2 5.5A3.5 3.5 0 0 1 8 4a3.5 3.5 0 0 1 6 1.5c0 4-6 8-6 8z"/></svg>'
+      : '<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 13.5S2 9.5 2 5.5A3.5 3.5 0 0 1 8 4a3.5 3.5 0 0 1 6 1.5c0 4-6 8-6 8z"/></svg>';
+    const zapMsg = encodeURIComponent(
+        'Ola! Vim pelo site da Modas GE Langery%0A' +
+        '*Produto:* ' + p.name + '%0A' +
+        '*Categoria:* ' + p.catLabel + '%0A' +
+        '*Valor:* R$ ' + p.price.toFixed(2).replace('.',',') + '%0A%0A' +
+        'Poderia me dar mais informacoes?'
+      );
+    return '<div class="pcard ' + (lg?'pcard--lg':'') + '" onclick="openQV(' + p.id + ')">'
+      + '<div class="pcard__img">'
+      + badgeHtml(p)
+      + '<button class="pcard__wish ' + wActive + '" onclick="toggleWish(event,' + p.id + ')" title="Favoritar">' + wIcon + '</button>'
+      + '<div class="pcard__img-inner" style="background:' + (gradients[p.cat]||gradients.conjunto) + '">'
+      + (SVG_ICONS[p.cat] || SVG_ICONS.conjunto)
+      + '</div></div>'
+      + '<div class="pcard__info">'
+      + '<span class="pcard__cat">' + p.catLabel + '</span>'
+      + '<div class="pcard__name">' + p.name + '</div>'
+      + '<div class="pcard__price-row">'
+      + '<span class="pcard__price">R$ ' + p.price.toFixed(2).replace('.',',') + '</span>'
+      + (p.priceOld ? '<span class="pcard__price-old">R$ ' + p.priceOld.toFixed(2).replace('.',',') + '</span>' : '')
+      + (p.priceOld ? '<span class="pcard__price-off">-' + Math.round((1-p.price/p.priceOld)*100) + '%</span>' : '')
+      + '</div>'
+      + '<div class="pcard__sizes">' + p.sizes.slice(0,5).map(s=>'<span class="pcard__size">'+s+'</span>').join('') + '</div>'
+      + '<div class="pcard__actions">'
+      + '<a href="https://wa.me/553197873881?text=' + zapMsg + '" target="_blank" class="pcard__buy" onclick="event.stopPropagation()">Comprar</a>'
+      + '<a href="https://wa.me/553197873881?text=' + zapMsg + '" target="_blank" class="pcard__zap" title="WhatsApp" onclick="event.stopPropagation()"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 1a9 9 0 1 1-7.6 13.8L1 19l4.2-1.4A9 9 0 0 1 10 1z"/><path d="M7.5 7.5c.2.9.7 1.8 1.5 2.5.7.7 1.6 1.3 2.5 1.5l.5-.5c.3-.3.7-.4 1-.1.5.3 1.1.6 1.5 1 .2.3 0 .9-.5 1.3-.9 1-2.5 1.3-4.2.4C7.8 12.7 6 10.8 5.4 9c-.9-1.7-.6-3.3.4-4.2.4-.5 1-.7 1.3-.5.4.4.7 1 1 1.5.3.3.2.7-.1 1Z"/></svg></a>'
+      + '</div></div></div>';
+  }).join('');
+}
+
+function toggleWish(e, id) {
+  e.stopPropagation();
+  const btn = e.currentTarget;
+  if (wishlist.includes(id)) {
+    wishlist = wishlist.filter(x => x !== id);
+    btn.classList.remove('active');
+    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 13.5S2 9.5 2 5.5A3.5 3.5 0 0 1 8 4a3.5 3.5 0 0 1 6 1.5c0 4-6 8-6 8z"/></svg>';
+  } else {
+    wishlist.push(id);
+    btn.classList.add('active');
+    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 16 16" fill="#C9A84C" stroke="#C9A84C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 13.5S2 9.5 2 5.5A3.5 3.5 0 0 1 8 4a3.5 3.5 0 0 1 6 1.5c0 4-6 8-6 8z"/></svg>';
+  }
+  localStorage.setItem('mg_wish', JSON.stringify(wishlist));
+  const navWish = document.getElementById('navWish');
+  if (navWish) navWish.style.color = wishlist.length ? 'var(--gold)' : '';
+}
+
+function openQV(id) {
+  const p = CATALOG.find(x => x.id === id);
+  if (!p) return;
+  var selectedSize = '';
+  var sels = document.querySelectorAll('.qv-size.sel');
+  if(sels.length > 0) selectedSize = sels[0].textContent;
+  const zapMsg = encodeURIComponent(
+    'Ola! Vim pelo site da Modas GE Langery%0A' +
+    '*Produto:* ' + p.name + '%0A' +
+    '*Categoria:* ' + p.catLabel + '%0A' +
+    (selectedSize ? '*Tamanho:* ' + selectedSize + '%0A' : '') +
+    '*Valor:* R$ ' + p.price.toFixed(2).replace('.',',') + '%0A%0A' +
+    'Poderia me dar mais informacoes?'
+  );
+  document.getElementById('qvImg').innerHTML = '<div style="width:100%;height:100%;min-height:360px;background:linear-gradient(145deg,#2A1009,#1A0A06);display:flex;align-items:center;justify-content:center">' + (SVG_ICONS[p.cat]||SVG_ICONS.conjunto) + '</div>';
+  document.getElementById('qvBody').innerHTML = '<span class="qv-cat">' + p.catLabel + '</span>'
+    + '<div class="qv-name">' + p.name + '</div>'
+    + '<p class="qv-desc">' + p.desc + '</p>'
+    + '<div class="qv-price">R$ ' + p.price.toFixed(2).replace('.',',') + '</div>'
+    + '<div class="qv-size-title">Tamanhos</div>'
+    + '<div class="qv-sizes">' + p.sizes.map(s=>'<span class="qv-size" onclick="this.classList.toggle(\'sel\')">'+s+'</span>').join('') + '</div>'
+    + '<div class="qv-actions">'
+    + '<a href="https://wa.me/553197873881?text=' + zapMsg + '" target="_blank" class="btn-solid">Comprar pelo WhatsApp</a>'
+    + '<a href="https://wa.me/553197873881?text=' + zapMsg + '" target="_blank" class="btn-border">Ver mais opcoes</a>'
+    + '</div>';
+  document.getElementById('qvOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeQV() {
+  document.getElementById('qvOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.getElementById('qvOverlay').addEventListener('click', e => { if(e.target === e.currentTarget) closeQV(); });
+
+function handleNewsletter(e) {
+  e.preventDefault();
+  alert('Obrigada! Voce receberá nossas novidades em breve.');
+  e.target.reset();
+}
+
+// Navbar scroll
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// Init
+renderProducts();
+</script>
+</body>
+</html>

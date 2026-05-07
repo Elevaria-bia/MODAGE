@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/logo/favicon-32.png">
+  <meta name="description" content="Modas GE Langery — Moda Feminina, Masculina e Infantil. Elegância e estilo em cada peça.">
+  <meta name="theme-color" content="#0D0D0D">
+  <title>Modas GE — Langery & Moda</title>
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Modas GE — Langery & Moda">
+  <meta property="og:description" content="Langery exclusiva, Moda Feminina, Masculina e Infantil.">
+  <meta property="og:type" content="website">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+
+  <style>
+    /* ── PAGE-SPECIFIC ────────────────────────────────────── */
+
+    /* Announcement bar */
+    .announcement-bar {
+      background: var(--color-chocolate);
+      padding: 8px var(--gutter);
+      text-align: center;
+    }
+    .announcement-bar p {
+      font-family: var(--font-label);
+      font-size: var(--text-xxs);
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      color: var(--color-gold-light);
+    }
+    .announcement-bar span { color: var(--color-rose-light); margin-inline: 6px; }
+
+    /* Categories strip */
+    .categories-strip {
+      padding-block: var(--space-20);
+    }
+    .categories-strip__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-4);
+      margin-top: var(--space-10);
+    }
+    .cat-card {
+      position: relative;
+      aspect-ratio: 3/4;
+      overflow: hidden;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      display: block;
+    }
+    .cat-card__bg {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 80px;
+      transition: transform var(--transition-slow);
+    }
+    .cat-card:hover .cat-card__bg { transform: scale(1.06); }
+    .cat-card--langery .cat-card__bg   { background: linear-gradient(145deg, #B07D75, #3D1C10); }
+    .cat-card--feminina .cat-card__bg  { background: linear-gradient(145deg, #EDD8D4, #D4A8A0); }
+    .cat-card--masculina .cat-card__bg { background: linear-gradient(145deg, #2C2C2C, #0D0D0D); }
+    .cat-card--infantil .cat-card__bg  { background: linear-gradient(145deg, #EDD8D4, #C5BFBD); }
+    .cat-card__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(13,13,13,.85) 40%, transparent 100%);
+    }
+    .cat-card__info {
+      position: absolute;
+      bottom: var(--space-5); left: var(--space-5); right: var(--space-5);
+    }
+    .cat-card__name {
+      font-family: var(--font-display);
+      font-size: var(--text-h4);
+      font-weight: var(--weight-bold);
+      color: var(--color-white);
+      margin-bottom: var(--space-1);
+    }
+    .cat-card__count {
+      font-family: var(--font-label);
+      font-size: 9px;
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      color: var(--color-gold);
+    }
+
+    /* Featured products */
+    .featured-section {
+      padding-block: var(--space-20);
+      background: var(--color-grey-50);
+    }
+    .featured-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: var(--space-10);
+      gap: var(--space-4);
+    }
+
+    /* Editorial banner */
+    .editorial-banner {
+      background: var(--color-noir);
+      padding-block: var(--space-20);
+    }
+    .editorial-banner__inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-6);
+    }
+
+    /* Promise strip */
+    .promise-strip {
+      padding-block: var(--space-12);
+      background: var(--color-white);
+      border-top: 1px solid var(--color-grey-100);
+      border-bottom: 1px solid var(--color-grey-100);
+    }
+    .promise-strip__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-6);
+      text-align: center;
+    }
+    .promise-item__icon { font-size: 28px; margin-bottom: var(--space-3); }
+    .promise-item__title {
+      font-family: var(--font-label);
+      font-size: var(--text-xxs);
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      color: var(--color-chocolate);
+      margin-bottom: var(--space-1);
+    }
+    .promise-item__desc {
+      font-size: var(--text-xs);
+      font-weight: var(--weight-light);
+      color: var(--color-grey-600);
+    }
+
+    /* Logo section */
+    .logo-section {
+      text-align: center;
+      padding-block: var(--space-12);
+      background: var(--color-grey-50);
+    }
+    .logo-monogram {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 120px; height: 120px;
+      border: 1.5px solid var(--color-gold);
+      border-radius: 50%;
+      position: relative;
+      margin-bottom: var(--space-5);
+    }
+    .logo-monogram::after {
+      content: '';
+      position: absolute; inset: 8px;
+      border: 1px solid rgba(201,168,76,.3);
+      border-radius: 50%;
+    }
+    .logo-monogram__letter {
+      font-family: var(--font-display);
+      font-size: 72px;
+      font-weight: var(--weight-black);
+      color: var(--color-chocolate);
+      line-height: 1;
+    }
+
+    @media (max-width: 768px) {
+      .categories-strip__grid { grid-template-columns: repeat(2, 1fr); }
+      .editorial-banner__inner { grid-template-columns: 1fr; }
+      .promise-strip__grid { grid-template-columns: repeat(2, 1fr); }
+      .featured-header { flex-direction: column; align-items: flex-start; }
+    }
+    @media (max-width: 480px) {
+      .promise-strip__grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ ANNOUNCEMENT BAR ══════════════════════════════════ -->
+  <div class="announcement-bar">
+    <p>
+      <span>✦</span>
+      Frete grátis acima de R$ 299 para todo o Brasil
+      <span>✦</span>
+      Parcele em até 10x sem juros
+      <span>✦</span>
+      Novidades toda semana
+    </p>
+  </div>
+
+  <!-- ══ NAVBAR ════════════════════════════════════════════ -->
+  <nav class="navbar">
+    <div class="container">
+      <div class="navbar__inner">
+
+        <!-- Logo -->
+        <a href="index.html" class="navbar__logo">
+          <img src="assets/logo/logo-modas-ge.png" alt="Modas GE" class="navbar__logo-img" style="height:44px;width:auto;object-fit:contain;filter:brightness(1.05);">
+        </a>
+
+        <!-- Links -->
+        <nav class="navbar__nav" id="navMenu">
+          <a href="catalogo.html?cat=feminina" class="navbar__link">Feminina</a>
+          <a href="catalogo.html?cat=masculina" class="navbar__link">Masculina</a>
+          <a href="catalogo.html?cat=infantil" class="navbar__link">Infantil</a>
+          <a href="catalogo.html?cat=langery" class="navbar__link">Langery ✦</a>
+          <a href="catalogo.html?sale=true" class="navbar__link">Promoções</a>
+        </nav>
+
+        <!-- Actions -->
+        <div class="navbar__actions">
+          <a href="catalogo.html" class="navbar__icon" title="Buscar"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="6.5" cy="6.5" r="4.5"/><line x1="10.5" y1="10.5" x2="14" y2="14"/></svg></a>
+          <a href="#" class="navbar__icon" title="Favoritos"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 13.5S2 9.5 2 5.5A3.5 3.5 0 0 1 8 4a3.5 3.5 0 0 1 6 1.5c0 4-6 8-6 8z"/></svg></a>
+          <a href="#" class="navbar__icon" title="Sacola">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6V4a3 3 0 0 1 6 0v2"/><rect x="2" y="6" width="12" height="9" rx="1"/></svg>
+            <span class="navbar__icon-badge"></span>
+          </a>
+          <button class="navbar__hamburger" id="hamburger" aria-label="Menu" onclick="document.getElementById('navMenu').classList.toggle('open')">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </nav>
+
+  <!-- ══ HERO ══════════════════════════════════════════════ -->
+  <section class="hero">
+    <div class="hero__bg-pattern"></div>
+    <div class="container">
+      <div class="hero__content">
+        <span class="hero__eyebrow">Modas GE Langery · Coleção 2026</span>
+        <h1 class="hero__title">
+          VIVA A<em>sua moda</em>
+        </h1>
+        <p class="hero__subtitle">
+          Elegância que transforma, estilo que empodera.
+          Da langery ao look completo, temos tudo para você.
+        </p>
+        <div class="hero__cta">
+          <a href="catalogo.html" class="btn btn--gold btn--lg">Explorar Coleção</a>
+          <a href="catalogo.html?cat=langery" class="btn btn--outline-gold btn--lg">Langery Exclusiva</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ PROMISES STRIP ════════════════════════════════════ -->
+  <section class="promise-strip">
+    <div class="container">
+      <div class="promise-strip__grid">
+        <div class="promise-item">
+          <div class="promise-item__icon"><svg width="24" height="24" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="8" width="16" height="9" rx="1"/><path d="M18 11h4l2 5H18"/><circle cx="7" cy="20" r="1.5"/><circle cx="17" cy="20" r="1.5"/></svg></div>
+          <div class="promise-item__title">Entrega Rápida</div>
+          <div class="promise-item__desc">Frete grátis acima de R$299</div>
+        </div>
+        <div class="promise-item">
+          <div class="promise-item__icon"><svg width="24" height="24" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13,2 16,9 24,10 18,16 20,24 13,20 6,24 8,16 2,10 10,9"/></svg></div>
+          <div class="promise-item__title">Exclusividade</div>
+          <div class="promise-item__desc">Peças selecionadas com curadoria</div>
+        </div>
+        <div class="promise-item">
+          <div class="promise-item__icon"><svg width="24" height="24" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13,3 16,10 24,10 18,15 20,23 13,18 6,23 8,15 2,10 10,10"/><circle cx="13" cy="13" r="4" stroke-width="0.8" stroke-dasharray="2,2"/></svg></div>
+          <div class="promise-item__title">Qualidade Premium</div>
+          <div class="promise-item__desc">Tecidos e acabamentos superiores</div>
+        </div>
+        <div class="promise-item">
+          <div class="promise-item__icon"><svg width="24" height="24" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13a9 9 0 0 1 9-9 9 9 0 0 1 7 3.4"/><path d="M22 13a9 9 0 0 1-9 9 9 9 0 0 1-7-3.4"/><polyline points="20,5 24,8 20,11"/><polyline points="6,15 2,18 6,21"/></svg></div>
+          <div class="promise-item__title">Troca Fácil</div>
+          <div class="promise-item__desc">30 dias para troca sem burocracia</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ LOGO / BRAND MOMENT ═══════════════════════════════ -->
+  <section class="logo-section">
+    <div class="container">
+      <div class="logo-monogram">
+        <span class="logo-monogram__letter">G</span>
+      </div>
+      <div class="section-eyebrow" style="justify-content:center;display:flex">Modas GE Langery</div>
+      <h2 class="section-title" style="text-align:center">Moda Infantil, Masculina e Feminina</h2>
+      <p class="section-subtitle" style="text-align:center;max-width:480px;margin-inline:auto">
+        Há anos vestindo famílias inteiras com elegância, qualidade e personalidade.
+      </p>
+    </div>
+  </section>
+
+  <!-- ══ CATEGORIES ════════════════════════════════════════ -->
+  <section class="categories-strip">
+    <div class="container">
+      <span class="section-eyebrow">Explore por Categoria</span>
+      <h2 class="section-title">Encontre seu estilo</h2>
+
+      <div class="categories-strip__grid">
+        <a href="catalogo.html?cat=langery" class="cat-card cat-card--langery">
+          <div class="cat-card__bg"><svg width="80" height="80" viewBox="0 0 90 90" fill="none" stroke="rgba(201,168,76,0.5)" stroke-width="1.3" stroke-linecap="round"><path d="M20 38 Q30 22 45 28 Q60 22 70 38 L66 72 Q45 82 24 72 Z"/><path d="M24 43 Q45 34 66 43"/><ellipse cx="45" cy="32" rx="11" ry="7" stroke-opacity="0.35"/></svg></div>
+          <div class="cat-card__overlay"></div>
+          <div class="cat-card__info">
+            <div class="cat-card__name">Langery</div>
+            <div class="cat-card__count">Coleção Exclusiva</div>
+          </div>
+        </a>
+        <a href="catalogo.html?cat=feminina" class="cat-card cat-card--feminina">
+          <div class="cat-card__bg"><svg width="80" height="80" viewBox="0 0 90 90" fill="none" stroke="rgba(201,168,76,0.5)" stroke-width="1.3" stroke-linecap="round"><path d="M33 14 Q45 10 57 14"/><path d="M33 14 L20 30 L28 33 L26 78 Q45 82 64 78 L62 33 L70 30 L57 14"/><path d="M28 33 Q45 28 62 33"/><path d="M32 50 Q45 46 58 50" stroke-opacity="0.4"/></svg></div>
+          <div class="cat-card__overlay"></div>
+          <div class="cat-card__info">
+            <div class="cat-card__name">Feminina</div>
+            <div class="cat-card__count">Últimas Tendências</div>
+          </div>
+        </a>
+        <a href="catalogo.html?cat=masculina" class="cat-card cat-card--masculina">
+          <div class="cat-card__bg"><svg width="80" height="80" viewBox="0 0 90 90" fill="none" stroke="rgba(201,168,76,0.5)" stroke-width="1.3" stroke-linecap="round"><path d="M32 14 L22 28 L38 35 L38 78 L52 78 L52 35 L68 28 L58 14"/><path d="M32 14 Q45 20 58 14"/><path d="M45 14 L40 24 L45 28 L50 24 Z"/><line x1="38" y1="50" x2="52" y2="50" stroke-opacity="0.35"/></svg></div>
+          <div class="cat-card__overlay"></div>
+          <div class="cat-card__info">
+            <div class="cat-card__name">Masculina</div>
+            <div class="cat-card__count">Estilo & Elegância</div>
+          </div>
+        </a>
+        <a href="catalogo.html?cat=infantil" class="cat-card cat-card--infantil">
+          <div class="cat-card__bg"><svg width="80" height="80" viewBox="0 0 90 90" fill="none" stroke="rgba(201,168,76,0.5)" stroke-width="1.3" stroke-linecap="round"><path d="M20 40 Q30 20 45 30 Q60 20 70 40 Q60 60 45 55 Q30 60 20 40Z"/><path d="M45 30 L45 55"/><path d="M32 48 Q45 42 58 48" stroke-opacity="0.45"/><circle cx="45" cy="30" r="3" fill="rgba(201,168,76,0.2)" stroke-width="0.8"/></svg></div>
+          <div class="cat-card__overlay"></div>
+          <div class="cat-card__info">
+            <div class="cat-card__name">Infantil</div>
+            <div class="cat-card__count">Para os Pequenos</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FEATURED PRODUCTS ══════════════════════════════════ -->
+  <section class="featured-section">
+    <div class="container">
+      <div class="featured-header">
+        <div>
+          <span class="section-eyebrow">Seleção Especial</span>
+          <h2 class="section-title">Peças em Destaque</h2>
+        </div>
+        <a href="catalogo.html" class="btn btn--ghost">Ver todo o catálogo →</a>
+      </div>
+
+      <div class="products-grid" id="featuredGrid">
+        <!-- Renderizado por JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ EDITORIAL BANNER ═══════════════════════════════════ -->
+  <section class="editorial-banner">
+    <div class="container">
+      <div class="editorial-banner__inner">
+
+        <div class="editorial-card" style="background:linear-gradient(135deg,#B07D75,#3D1C10)">
+          <div class="editorial-card__overlay"></div>
+          <div style="position:relative;z-index:1;text-align:center;padding-bottom:24px"><svg width="72" height="72" viewBox="0 0 90 90" fill="none" stroke="rgba(250,248,245,0.5)" stroke-width="1.3" stroke-linecap="round"><path d="M20 38 Q30 22 45 28 Q60 22 70 38 L66 72 Q45 82 24 72 Z"/><path d="M24 43 Q45 34 66 43"/><ellipse cx="45" cy="32" rx="11" ry="7" stroke-opacity="0.35"/></svg></div>
+          <div class="editorial-card__issue">Destaque · Langery 2026</div>
+          <h3 class="editorial-card__title">Elegância<br>Íntima</h3>
+          <p class="editorial-card__meta">Linha exclusiva com renda e cetim premium</p>
+          <a href="catalogo.html?cat=langery" class="btn btn--outline-gold" style="margin-top:16px">Ver Langery</a>
+        </div>
+
+        <div class="editorial-card" style="background:linear-gradient(135deg,#EDD8D4,#D4A8A0)">
+          <div class="editorial-card__overlay"></div>
+          <div style="position:relative;z-index:1;text-align:center;padding-bottom:24px"><svg width="72" height="72" viewBox="0 0 90 90" fill="none" stroke="rgba(61,28,16,0.55)" stroke-width="1.3" stroke-linecap="round"><path d="M33 14 Q45 10 57 14"/><path d="M33 14 L20 30 L28 33 L26 78 Q45 82 64 78 L62 33 L70 30 L57 14"/><path d="M28 33 Q45 28 62 33"/><path d="M32 50 Q45 46 58 50" stroke-opacity="0.4"/></svg></div>
+          <div class="editorial-card__issue">Coleção · Verão 2026</div>
+          <h3 class="editorial-card__title">A Moda que<br>te Eleva</h3>
+          <p class="editorial-card__meta">Nova coleção feminina com tecidos leves</p>
+          <a href="catalogo.html?cat=feminina" class="btn btn--gold" style="margin-top:16px">Ver Feminina</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ NEWSLETTER ═════════════════════════════════════════ -->
+  <section class="newsletter-strip">
+    <div class="container">
+      <span class="section-eyebrow" style="color:var(--color-gold-light)">Fique por dentro</span>
+      <h2 class="newsletter-strip__title">Novidades em primeira mão</h2>
+      <p class="newsletter-strip__sub">Receba lançamentos, promoções exclusivas e tendências</p>
+      <form class="newsletter-strip__form" onsubmit="handleNewsletter(event)">
+        <input
+          type="email"
+          class="newsletter-strip__input"
+          placeholder="Seu melhor e-mail"
+          required
+        >
+        <button type="submit" class="btn btn--gold">Assinar</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ════════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <div class="footer__brand-name">Modas <span>GE</span></div>
+          <div class="footer__brand-tagline">Langery & Moda</div>
+          <p class="footer__brand-desc">
+            Há anos levando elegância, qualidade e personalidade para as famílias.
+            Moda feminina, masculina, infantil e langery exclusiva.
+          </p>
+          <div class="footer__social">
+            <a href="#" class="footer__social-link" title="Instagram"><svg width="16" height="16" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><rect x="1" y="1" width="12" height="12" rx="3"/><circle cx="7" cy="7" r="3"/><circle cx="10.5" cy="3.5" r="0.5" fill="currentColor" stroke="none"/></svg></a>
+            <a href="#" class="footer__social-link" title="Facebook"><svg width="16" height="16" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M8 2H6a2 2 0 0 0-2 2v2H2v3h2v5h3V9h2l1-3H7V4a1 1 0 0 1 1-1Z"/></svg></a>
+            <a href="https://wa.me/553197873881" class="footer__social-link" title="WhatsApp"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-l
