@@ -43,7 +43,7 @@
       name:          row.name,
       category:      row.category,
       categoryLabel: CAT_LABELS[row.category] || row.category,
-      price:         Number(row.price),
+      price:         row.price != null ? Number(row.price) : null,
       priceOld:      row.price_old != null ? Number(row.price_old) : null,
       badge:         row.badge || null,
       description:   row.description || '',
@@ -59,7 +59,7 @@
     return {
       name:        (p.name || '').trim(),
       category:    p.category,
-      price:       Number(p.price),
+      price:       (p.price == null || p.price === '') ? null : Number(p.price),
       price_old:   p.priceOld != null && p.priceOld !== '' ? Number(p.priceOld) : null,
       badge:       p.badge || null,
       description: (p.description || '').trim(),

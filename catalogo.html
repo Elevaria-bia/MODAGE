@@ -1117,7 +1117,7 @@ function renderProducts() {
     if (!p.badge) return '';
     const map = {
       novo:'<span class="pcard__badge badge-novo">Novo</span>',
-      sale:'<span class="pcard__badge badge-sale">Sale '+(p.priceOld?'-'+Math.round((1-p.price/p.priceOld)*100)+'%':'')+'</span>',
+      sale:'<span class="pcard__badge badge-sale">Sale '+((p.priceOld&&p.price)?'-'+Math.round((1-p.price/p.priceOld)*100)+'%':'')+'</span>',
       exclusivo:'<span class="pcard__badge badge-exclusivo">Exclusivo</span>',
     };
     return map[p.badge] || '';
@@ -1140,7 +1140,7 @@ function renderProducts() {
         'Ola! Vim pelo site da Modas GE Langery%0A' +
         '*Produto:* ' + p.name + '%0A' +
         '*Categoria:* ' + p.categoryLabel + '%0A' +
-        '*Valor:* R$ ' + p.price.toFixed(2).replace('.',',') + '%0A%0A' +
+        (p.price != null ? '*Valor:* R$ ' + p.price.toFixed(2).replace('.',',') : '*Valor:* Sob consulta') + '%0A%0A' +
         'Poderia me dar mais informacoes?'
       );
     return '<div class="pcard ' + (lg?'pcard--lg':'') + '" onclick="openQV(' + p.id + ')">'
@@ -1154,9 +1154,9 @@ function renderProducts() {
       + '<span class="pcard__cat">' + p.categoryLabel + '</span>'
       + '<div class="pcard__name">' + p.name + '</div>'
       + '<div class="pcard__price-row">'
-      + '<span class="pcard__price">R$ ' + p.price.toFixed(2).replace('.',',') + '</span>'
-      + (p.priceOld ? '<span class="pcard__price-old">R$ ' + p.priceOld.toFixed(2).replace('.',',') + '</span>' : '')
-      + (p.priceOld ? '<span class="pcard__price-off">-' + Math.round((1-p.price/p.priceOld)*100) + '%</span>' : '')
+      + (p.price != null ? '<span class="pcard__price">R$ ' + p.price.toFixed(2).replace('.',',') + '</span>' : '<span class="pcard__price">Sob consulta</span>')
+      + ((p.priceOld && p.price) ? '<span class="pcard__price-old">R$ ' + p.priceOld.toFixed(2).replace('.',',') + '</span>' : '')
+      + ((p.priceOld && p.price) ? '<span class="pcard__price-off">-' + Math.round((1-p.price/p.priceOld)*100) + '%</span>' : '')
       + '</div>'
       + '<div class="pcard__sizes">' + p.sizes.slice(0,5).map(s=>'<span class="pcard__size">'+s+'</span>').join('') + '</div>'
       + '<div class="pcard__actions">'
@@ -1194,7 +1194,7 @@ function openQV(id) {
     '*Produto:* ' + p.name + '%0A' +
     '*Categoria:* ' + p.categoryLabel + '%0A' +
     (selectedSize ? '*Tamanho:* ' + selectedSize + '%0A' : '') +
-    '*Valor:* R$ ' + p.price.toFixed(2).replace('.',',') + '%0A%0A' +
+    (p.price != null ? '*Valor:* R$ ' + p.price.toFixed(2).replace('.',',') : '*Valor:* Sob consulta') + '%0A%0A' +
     'Poderia me dar mais informacoes?'
   );
   document.getElementById('qvImg').innerHTML = (p.images && p.images.length)
@@ -1203,7 +1203,7 @@ function openQV(id) {
   document.getElementById('qvBody').innerHTML = '<span class="qv-cat">' + p.categoryLabel + '</span>'
     + '<div class="qv-name">' + p.name + '</div>'
     + '<p class="qv-desc">' + (p.description||'') + '</p>'
-    + '<div class="qv-price">R$ ' + p.price.toFixed(2).replace('.',',') + '</div>'
+    + '<div class="qv-price">' + (p.price != null ? 'R$ ' + p.price.toFixed(2).replace('.',',') : 'Sob consulta') + '</div>'
     + '<div class="qv-size-title">Tamanhos</div>'
     + '<div class="qv-sizes">' + p.sizes.map(s=>'<span class="qv-size" onclick="this.classList.toggle(\'sel\')">'+s+'</span>').join('') + '</div>'
     + '<div class="qv-actions">'

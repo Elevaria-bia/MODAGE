@@ -507,8 +507,9 @@
         var imgHtml = img
           ? '<img src="' + img + '" alt="' + p.name + '" style="width:100%;height:100%;object-fit:cover">'
           : '<svg width="60" height="60" viewBox="0 0 90 90" fill="none" stroke="rgba(201,168,76,0.4)" stroke-width="1.5" stroke-linecap="round"><path d="M20 38 Q30 22 45 28 Q60 22 70 38 L66 72 Q45 82 24 72 Z"/><path d="M24 43 Q45 34 66 43"/><ellipse cx="45" cy="32" rx="11" ry="7" stroke-opacity="0.35"/></svg>';
-        var wa = 'https://wa.me/553197873881?text=' + encodeURIComponent('Olá! Tenho interesse no produto: ' + p.name + ' — R$ ' + (p.price||'').toString());
-        return '<div class="product-card"><div class="product-card__media">' + imgHtml + '</div><div class="product-card__body"><div class="product-card__name">' + p.name + '</div><div class="product-card__price">R$ ' + (p.price||'--') + '</div><a href="' + wa + '" class="btn btn--gold btn--sm" target="_blank" style="width:100%;margin-top:8px">Ver no WhatsApp</a></div></div>';
+        var precoTxt = (p.price != null) ? 'R$ ' + p.price.toFixed(2).replace('.',',') : 'Sob consulta';
+        var wa = 'https://wa.me/553197873881?text=' + encodeURIComponent('Olá! Tenho interesse no produto: ' + p.name + ' (' + precoTxt + ')');
+        return '<div class="product-card"><div class="product-card__media">' + imgHtml + '</div><div class="product-card__body"><div class="product-card__name">' + p.name + '</div><div class="product-card__price">' + precoTxt + '</div><a href="' + wa + '" class="btn btn--gold btn--sm" target="_blank" style="width:100%;margin-top:8px">Ver no WhatsApp</a></div></div>';
       }).join('');
     });
 

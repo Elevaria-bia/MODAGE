@@ -748,8 +748,9 @@
 
         <!-- Preços -->
         <div class="form-group">
-          <label class="form-label">Preço <span>*</span></label>
+          <label class="form-label">Preço</label>
           <input type="number" class="form-input" id="pPrice" placeholder="149.90" step="0.01" min="0">
+          <div class="form-hint">Deixe vazio para mostrar "Sob consulta"</div>
         </div>
         <div class="form-group">
           <label class="form-label">Preço Anterior (promoção)</label>
@@ -998,7 +999,7 @@ function renderTable() {
 
   tbody.innerHTML = products.map(p => {
     const hasImg = p.images && p.images.length > 0;
-    const discount = p.priceOld ? Math.round((1 - p.price/p.priceOld)*100) : null;
+    const discount = (p.priceOld && p.price) ? Math.round((1 - p.price/p.priceOld)*100) : null;
     return `
     <tr>
       <td>
@@ -1016,7 +1017,7 @@ function renderTable() {
       </td>
       <td data-label="Categoria"><span class="cat-badge ${catClass[p.category]||''}">${catLabel[p.category]||p.category}</span></td>
       <td data-label="Preço">
-        <div class="price-cell">R$ ${p.price.toFixed(2).replace('.',',')}</div>
+        <div class="price-cell">${p.price != null ? 'R$ ' + p.price.toFixed(2).replace('.',',') : 'Sob consulta'}</div>
         ${p.priceOld ? `<div style="font-size:11px;color:#9A9290;text-decoration:line-through">R$ ${p.priceOld.toFixed(2).replace('.',',')}${discount?' (−'+discount+'%)':''}</div>` : ''}
       </td>
       <td data-label="Status">
@@ -1138,9 +1139,10 @@ function clearForm() {
 
 async function saveProduct() {
   const name  = document.getElementById('pName').value.trim();
-  const price = parseFloat(document.getElementById('pPrice').value);
+  const priceRaw = document.getElementById('pPrice').value.trim();
+  const price = priceRaw === '' ? null : parseFloat(priceRaw);
   if (!name) return showToast('Preencha o nome do produto','warn');
-  if (!price || price <= 0) return showToast('Preencha o preço corretamente','warn');
+  if (price !== null && (isNaN(price) || price <= 0)) return showToast('Preço inválido — deixe vazio para "Sob consulta"','warn');
   if (editingImages.some(x => x && x.uploading)) return showToast('Aguarde o envio das fotos terminar','warn');
 
   const id = document.getElementById('editingId').value;
