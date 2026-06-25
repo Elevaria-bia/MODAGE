@@ -122,7 +122,7 @@
   // Comprime/redimensiona no navegador antes de enviar: deixa a foto
   // leve (mais fotos cabem e o site carrega mais rápido).
   async function compressImage(file, maxDim, quality) {
-    maxDim = maxDim || 1280; quality = quality || 0.82;
+    maxDim = maxDim || 1600; quality = quality || 0.90;
     if (!file.type || !file.type.startsWith('image/')) return file;
     if (file.type === 'image/gif' || file.type === 'image/svg+xml') return file; // não rasteriza
     try {
