@@ -6,6 +6,8 @@
   <meta name="robots" content="noindex,nofollow">
   <title>Admin — Modas GE</title>
   <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Josefin+Sans:wght@300;400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
@@ -876,6 +878,48 @@
   </div>
 </div>
 
+<!-- ══ EDITOR DE FOTO (cortar / ajustar) ═════════════════ -->
+<style>
+  #cropStage{height:340px;background:#1a1a1a;border-radius:4px;overflow:hidden}
+  #cropStage img{max-width:100%;display:block}
+  .crop-tools{margin-top:16px}
+  .crop-ratios{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+  .crop-ratio{font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:8px 12px;border:1px solid #C5BFBD;border-radius:3px;background:#fff;color:#3D1C10;cursor:pointer}
+  .crop-ratio.active{border-color:#C9A84C;background:#F3ECD9;color:#9E7B2E}
+  .crop-adj{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+  .crop-adj label{font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:#9E7B2E;min-width:80px}
+  .crop-adj input[type=range]{flex:1;accent-color:#C9A84C}
+  @media(max-width:600px){ #cropStage{height:280px} }
+</style>
+<div class="modal-overlay" id="cropModal">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-header">
+      <div class="modal-title">Ajustar foto <span id="cropCount" style="font-family:'Montserrat',sans-serif;font-size:11px;color:#9A9290;font-weight:400"></span></div>
+      <button class="modal-close" onclick="cancelCrop()"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="1" y1="1" x2="11" y2="11"/><line x1="11" y1="1" x2="1" y2="11"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div id="cropStage"><img id="cropImg" alt=""></div>
+      <div class="crop-tools">
+        <div class="crop-ratios">
+          <button type="button" class="crop-ratio active" onclick="setCropRatio(0.75,this)">Retrato 3:4</button>
+          <button type="button" class="crop-ratio" onclick="setCropRatio(1,this)">Quadrado</button>
+          <button type="button" class="crop-ratio" onclick="setCropRatio('free',this)">Livre</button>
+          <button type="button" class="crop-ratio" onclick="cropRotate()">↻ Girar</button>
+        </div>
+        <div class="crop-adj"><label>Brilho</label><input type="range" id="cropBri" min="50" max="150" value="100" oninput="updateCropPreviewFilter()"></div>
+        <div class="crop-adj"><label>Contraste</label><input type="range" id="cropCon" min="50" max="150" value="100" oninput="updateCropPreviewFilter()"></div>
+        <div class="crop-adj"><label>Cor</label><input type="range" id="cropSat" min="0" max="200" value="100" oninput="updateCropPreviewFilter()"></div>
+        <div class="crop-adj"><label>Nitidez</label><input type="range" id="cropSharp" min="0" max="100" value="0"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="applyCrop(true)">Pular corte</button>
+      <button class="btn btn-gold" onclick="applyCrop(false)">Aplicar e enviar</button>
+    </div>
+  </div>
+</div>
+<style id="cropPreviewStyle"></style>
+
 <!-- Toast -->
 <div class="toast" id="toast">
   <span id="toastIcon"></span>
@@ -1284,23 +1328,126 @@ function handleDrop(e) {
   document.getElementById('imageUploadArea').classList.remove('drag-over');
   processFiles(Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/')));
 }
-async function processFiles(files) {
-  for (const file of files) {
-    if (file.size > 5 * 1024 * 1024) { showToast('Imagem '+file.name+' maior que 5MB','warn'); continue; }
-    const tempId = 'up-' + Date.now() + '-' + Math.random().toString(36).slice(2,6);
-    editingImages.push({ uploading: true, id: tempId });
-    renderImagePreviews();
-    try {
-      const url = await window.MG.uploadImage(file);
-      const idx = editingImages.findIndex(x => x && x.id === tempId);
-      if (idx !== -1) editingImages[idx] = url;
-    } catch (e) {
-      const idx = editingImages.findIndex(x => x && x.id === tempId);
-      if (idx !== -1) editingImages.splice(idx, 1);
-      showToast('Erro ao enviar imagem: ' + (e.message || e), 'warn');
-    }
-    renderImagePreviews();
+// ── EDITOR DE FOTO (cortar / ajustar / enviar) ────────────
+let cropQueue = [];
+let cropper = null;
+
+function processFiles(files) {
+  const valid = Array.from(files).filter(f => {
+    if (f.size > 5 * 1024 * 1024) { showToast('Imagem ' + (f.name||'') + ' maior que 5MB','warn'); return false; }
+    return f.type && f.type.startsWith('image/');
+  });
+  if (!valid.length) return;
+  cropQueue = cropQueue.concat(valid);
+  if (!document.getElementById('cropModal').classList.contains('open')) openNextCrop();
+}
+
+function openNextCrop() {
+  if (!cropQueue.length) return;
+  const file = cropQueue[0];
+  const reader = new FileReader();
+  reader.onload = function (ev) {
+    const img = document.getElementById('cropImg');
+    if (cropper) { cropper.destroy(); cropper = null; }
+    document.getElementById('cropBri').value = 100;
+    document.getElementById('cropCon').value = 100;
+    document.getElementById('cropSat').value = 100;
+    document.getElementById('cropSharp').value = 0;
+    updateCropPreviewFilter();
+    document.querySelectorAll('.crop-ratio').forEach((b, i) => b.classList.toggle('active', i === 0));
+    document.getElementById('cropCount').textContent = cropQueue.length > 1 ? ('(' + cropQueue.length + ' fotos na fila)') : '';
+    img.onload = function () {
+      if (cropper) cropper.destroy();
+      try { cropper = new Cropper(img, { viewMode: 1, autoCropArea: 1, aspectRatio: 0.75, background: false }); }
+      catch (e) { console.warn('[Modas GE] Cropper indisponível:', e); }
+    };
+    img.src = ev.target.result;
+    document.getElementById('cropModal').classList.add('open');
+  };
+  reader.readAsDataURL(file);
+}
+
+function setCropRatio(r, btn) {
+  if (cropper) cropper.setAspectRatio(r === 'free' ? NaN : r);
+  document.querySelectorAll('.crop-ratio').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+}
+function cropRotate() { if (cropper) cropper.rotate(90); }
+
+function cropAdj(id) { return parseInt(document.getElementById(id).value, 10) || 0; }
+function updateCropPreviewFilter() {
+  const b = cropAdj('cropBri') / 100, c = cropAdj('cropCon') / 100, s = cropAdj('cropSat') / 100;
+  document.getElementById('cropPreviewStyle').textContent =
+    '#cropStage img{filter:brightness(' + b + ') contrast(' + c + ') saturate(' + s + ');}';
+}
+
+async function applyCrop(skip) {
+  if (!cropQueue.length) { document.getElementById('cropModal').classList.remove('open'); return; }
+  const file = cropQueue.shift();
+  let toUpload = file;
+  if (!skip && cropper) {
+    const canvas = cropper.getCroppedCanvas({ maxWidth: 1600, maxHeight: 1600, imageSmoothingQuality: 'high' });
+    if (canvas) toUpload = await enhanceCanvas(canvas);
   }
+  if (cropper) { cropper.destroy(); cropper = null; }
+  document.getElementById('cropModal').classList.remove('open');
+
+  const tempId = 'up-' + Date.now() + '-' + Math.random().toString(36).slice(2, 6);
+  editingImages.push({ uploading: true, id: tempId });
+  renderImagePreviews();
+  try {
+    const url = await window.MG.uploadImage(toUpload);
+    const idx = editingImages.findIndex(x => x && x.id === tempId);
+    if (idx !== -1) editingImages[idx] = url;
+  } catch (e) {
+    const idx = editingImages.findIndex(x => x && x.id === tempId);
+    if (idx !== -1) editingImages.splice(idx, 1);
+    showToast('Erro ao enviar imagem: ' + (e.message || e), 'warn');
+  }
+  renderImagePreviews();
+
+  if (cropQueue.length) setTimeout(openNextCrop, 150);
+}
+
+function cancelCrop() {
+  cropQueue = [];
+  if (cropper) { cropper.destroy(); cropper = null; }
+  document.getElementById('cropModal').classList.remove('open');
+}
+
+async function enhanceCanvas(srcCanvas) {
+  const b = cropAdj('cropBri') / 100, c = cropAdj('cropCon') / 100, s = cropAdj('cropSat') / 100;
+  const sharp = cropAdj('cropSharp') / 100;
+  const w = srcCanvas.width, h = srcCanvas.height;
+  const out = document.createElement('canvas'); out.width = w; out.height = h;
+  const ctx = out.getContext('2d');
+  ctx.filter = 'brightness(' + b + ') contrast(' + c + ') saturate(' + s + ')';
+  ctx.drawImage(srcCanvas, 0, 0);
+  ctx.filter = 'none';
+  if (sharp > 0) sharpenCanvas(ctx, w, h, sharp);
+  return await new Promise(res => out.toBlob(res, 'image/jpeg', 0.9));
+}
+function sharpenCanvas(ctx, w, h, amount) {
+  try {
+    const src = ctx.getImageData(0, 0, w, h);
+    const dst = ctx.createImageData(w, h);
+    const s = src.data, d = dst.data;
+    const a = amount * 0.8, center = 1 + 4 * a;
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        const i = (y * w + x) * 4;
+        if (x === 0 || y === 0 || x === w - 1 || y === h - 1) {
+          d[i]=s[i]; d[i+1]=s[i+1]; d[i+2]=s[i+2]; d[i+3]=s[i+3]; continue;
+        }
+        for (let ch = 0; ch < 3; ch++) {
+          let v = s[i+ch]*center - a*s[i-4+ch] - a*s[i+4+ch] - a*s[i-w*4+ch] - a*s[i+w*4+ch];
+          d[i+ch] = v < 0 ? 0 : v > 255 ? 255 : v;
+        }
+        d[i+3] = s[i+3];
+      }
+    }
+    ctx.putImageData(dst, 0, 0);
+  } catch (e) { console.warn('[Modas GE] nitidez falhou:', e); }
 }
 function renderImagePreviews() {
   const grid = document.getElementById('imagePreviewGrid');

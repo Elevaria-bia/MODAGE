@@ -151,7 +151,7 @@
   window.MG.uploadImage = async function (file) {
     const out = await compressImage(file);
     const compressed = out !== file;
-    const ext  = compressed ? 'jpg' : ((file.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '') || 'jpg');
+    const ext  = compressed ? 'jpg' : (((file.name || '').split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '') || 'jpg');
     const path = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
     const { error } = await sb.storage.from('produtos')
       .upload(path, out, { cacheControl: '3600', upsert: false, contentType: out.type || 'image/jpeg' });
