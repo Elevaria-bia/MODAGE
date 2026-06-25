@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
   <title>Admin — Modas GE</title>
   <link rel="stylesheet" href="css/tokens.css">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Josefin+Sans:wght@300;400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -519,6 +520,9 @@
       <button class="sidebar-link" onclick="showPage('banners',this)">
         <span class="icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="14" height="10" rx="1"/><path d="M1 11l4-4 3 3 2-2 5 5"/><circle cx="11.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></span> Banners
       </button>
+      <button class="sidebar-link" onclick="showPage('contatos',this)">
+        <span class="icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="14" height="10" rx="1"/><path d="M1 4l7 5 7-5"/></svg></span> Contatos
+      </button>
     </div>
 
     <div style="margin-bottom:8px">
@@ -705,6 +709,31 @@
           <input type="text" class="form-input" id="heroSub" value="Elegância que transforma, estilo que empodera.">
         </div>
         <button class="btn btn-primary" onclick="saveBanners()">Salvar Banners</button>
+      </div>
+    </div>
+
+    <!-- ══ CONTATOS PAGE ══════════════════════════════════ -->
+    <div class="page" id="page-contatos">
+      <div class="topbar">
+        <div>
+          <div class="topbar-title">Contatos</div>
+          <div class="topbar-sub">E-mails captados no site (clube / novidades)</div>
+        </div>
+        <div class="topbar-actions">
+          <button class="btn btn-outline btn-sm" onclick="exportLeadsCsv()"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v8M5 7l3 3 3-3"/><path d="M2 12v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-1"/></svg> Baixar CSV</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr><th>E-mail</th><th>Origem</th><th>Data</th></tr>
+          </thead>
+          <tbody id="leadsTableBody"></tbody>
+        </table>
+        <div class="empty-table" id="emptyLeads" style="display:none">
+          <div class="empty-table-icon"><svg width="22" height="22" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="14" height="10" rx="1"/><path d="M1 4l7 5 7-5"/></svg></div>
+          <div class="empty-table-text">Nenhum contato captado ainda</div>
+        </div>
       </div>
     </div>
 
@@ -935,6 +964,38 @@ function showPage(page, btn) {
   document.getElementById('page-'+page).classList.add('active');
   if (btn) btn.classList.add('active');
   if (page === 'categories') renderCategories();
+  if (page === 'contatos') renderLeads();
+}
+
+// ── CONTATOS (leads) ──────────────────────────────────────
+let leadsCache = [];
+async function renderLeads() {
+  const tbody = document.getElementById('leadsTableBody');
+  const empty = document.getElementById('emptyLeads');
+  tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:#9A9290;padding:20px">Carregando…</td></tr>';
+  leadsCache = await window.MG.getLeads();
+  if (!leadsCache.length) { tbody.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  const srcLabel = { home:'Home', catalogo:'Catálogo' };
+  tbody.innerHTML = leadsCache.map(l => {
+    const d = l.created_at ? new Date(l.created_at).toLocaleDateString('pt-BR') : '';
+    return '<tr><td data-label="E-mail">' + l.email + '</td>'
+      + '<td data-label="Origem">' + (srcLabel[l.source] || l.source || '—') + '</td>'
+      + '<td data-label="Data">' + d + '</td></tr>';
+  }).join('');
+}
+function exportLeadsCsv() {
+  if (!leadsCache.length) return showToast('Nenhum contato pra exportar','warn');
+  const rows = [['email','origem','data']].concat(leadsCache.map(l => [
+    l.email, l.source || '', l.created_at ? new Date(l.created_at).toLocaleString('pt-BR') : ''
+  ]));
+  const csv = rows.map(r => r.map(c => '"' + String(c).replace(/"/g,'""') + '"').join(',')).join('\n');
+  const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'contatos-modas-ge.csv';
+  a.click();
+  showToast('CSV baixado!');
 }
 
 // ── STATS ─────────────────────────────────────────────────

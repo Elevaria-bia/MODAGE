@@ -129,6 +129,19 @@
     return data.publicUrl;
   };
 
+  // ── CAPTAÇÃO DE CLIENTES (newsletter) ────────────────────
+  window.MG.saveLead = async function (email, source) {
+    const { error } = await sb.from('leads')
+      .insert({ email: (email || '').trim().toLowerCase(), source: source || '' });
+    if (error) throw error;
+  };
+  window.MG.getLeads = async function () {
+    const { data, error } = await sb.from('leads')
+      .select('*').order('created_at', { ascending: false });
+    if (error) { console.error('[Modas GE] getLeads:', error.message); return []; }
+    return data || [];
+  };
+
   // ── AUTENTICAÇÃO (admin) ─────────────────────────────────
   window.MG.login      = (email, password) => sb.auth.signInWithPassword({ email, password });
   window.MG.logout     = () => sb.auth.signOut();

@@ -5,14 +5,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/logo/favicon-32.png">
-  <meta name="description" content="Modas GE Langery — Moda Feminina, Masculina e Infantil. Elegância e estilo em cada peça.">
+  <meta name="description" content="Modas GE Langery — lingerie e moda íntima em Sete Lagoas e região. Conjuntos, sutiãs, calcinhas, pijamas e camisolas. Peça pelo WhatsApp.">
+  <meta name="keywords" content="lingerie Sete Lagoas, moda íntima Sete Lagoas, sutiã, calcinha, conjunto lingerie, pijama, camisola, Modas GE">
   <meta name="theme-color" content="#0D0D0D">
-  <title>Modas GE — Langery & Moda</title>
+  <meta name="author" content="Modas GE Langery">
+  <link rel="canonical" href="https://modage.netlify.app/">
+  <title>Modas GE Langery — Lingerie em Sete Lagoas e Região</title>
 
-  <!-- Open Graph -->
-  <meta property="og:title" content="Modas GE — Langery & Moda">
-  <meta property="og:description" content="Langery exclusiva, Moda Feminina, Masculina e Infantil.">
+  <!-- Open Graph (prévia ao compartilhar no WhatsApp/Instagram/Facebook) -->
+  <meta property="og:site_name" content="Modas GE Langery">
+  <meta property="og:title" content="Modas GE Langery — Lingerie em Sete Lagoas e Região">
+  <meta property="og:description" content="Conjuntos, sutiãs, calcinhas, pijamas e camisolas. Elegância íntima que transforma. Peça pelo WhatsApp.">
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://modage.netlify.app/">
+  <meta property="og:image" content="https://modage.netlify.app/assets/logo/logo-modas-ge.png">
+  <meta property="og:locale" content="pt_BR">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Modas GE Langery — Lingerie em Sete Lagoas e Região">
+  <meta name="twitter:description" content="Conjuntos, sutiãs, calcinhas, pijamas e camisolas. Peça pelo WhatsApp.">
+  <meta name="twitter:image" content="https://modage.netlify.app/assets/logo/logo-modas-ge.png">
+
+  <!-- Dados de negócio local (Google entende que é loja em Sete Lagoas) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Store",
+    "name": "Modas GE Langery",
+    "description": "Lingerie e moda íntima: conjuntos, sutiãs, calcinhas, pijamas e camisolas.",
+    "image": "https://modage.netlify.app/assets/logo/logo-modas-ge.png",
+    "url": "https://modage.netlify.app/",
+    "telephone": "+55-31-9787-3881",
+    "areaServed": "Sete Lagoas e região, Minas Gerais",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Sete Lagoas",
+      "addressRegion": "MG",
+      "addressCountry": "BR"
+    },
+    "sameAs": [ "https://www.instagram.com/modasge.lingery/" ]
+  }
+  </script>
 
   <!-- Styles -->
   <link rel="stylesheet" href="css/tokens.css">
@@ -402,8 +434,8 @@
           <div class="footer__brand-name">Modas <span>GE</span></div>
           <div class="footer__brand-tagline">Langery & Moda</div>
           <p class="footer__brand-desc">
-            Há anos levando elegância, qualidade e personalidade para as famílias.
-            Moda feminina, masculina, infantil e langery exclusiva.
+            Lingerie e moda íntima com elegância e delicadeza.
+            Atendemos <strong>Sete Lagoas e região</strong> — peça pelo WhatsApp.
           </p>
           <div class="footer__social">
             <a href="https://www.instagram.com/modasge.lingery/" class="footer__social-link" title="Instagram" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><rect x="1" y="1" width="12" height="12" rx="3"/><circle cx="7" cy="7" r="3"/><circle cx="10.5" cy="3.5" r="0.5" fill="currentColor" stroke="none"/></svg></a>
@@ -526,12 +558,18 @@
     }
 
     // Newsletter
-    function handleNewsletter(e) {
+    async function handleNewsletter(e) {
       e.preventDefault();
       var input = e.target.querySelector('input');
-      if (input) {
+      var email = input ? input.value.trim() : '';
+      if (!email) return;
+      try {
+        if (window.MG && window.MG.saveLead) await window.MG.saveLead(email, 'home');
         alert('Obrigada! Você receberá nossas novidades em breve.');
-        input.value = '';
+        if (input) input.value = '';
+      } catch (err) {
+        console.error(err);
+        alert('Ops, não consegui salvar agora. Tente novamente em instantes.');
       }
     }
   </script>

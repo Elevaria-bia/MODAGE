@@ -5,8 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/logo/favicon-32.png">
-  <meta name="description" content="Modas GE Langery — Conjuntos, Sutiã, Calcinha, Pijama e Camisola. Elegância íntima que transforma.">
-  <title>Coleção — Modas GE Langery</title>
+  <meta name="description" content="Catálogo de lingerie da Modas GE em Sete Lagoas e região: conjuntos, sutiãs, calcinhas, pijamas e camisolas. Veja e peça pelo WhatsApp.">
+  <meta name="keywords" content="lingerie Sete Lagoas, moda íntima Sete Lagoas, comprar sutiã, calcinha, conjunto lingerie, pijama, camisola, Modas GE">
+  <link rel="canonical" href="https://modage.netlify.app/catalogo.html">
+  <title>Catálogo de Lingerie — Modas GE | Sete Lagoas e Região</title>
+  <meta property="og:site_name" content="Modas GE Langery">
+  <meta property="og:title" content="Catálogo de Lingerie — Modas GE | Sete Lagoas e Região">
+  <meta property="og:description" content="Conjuntos, sutiãs, calcinhas, pijamas e camisolas. Monte sua sacola e peça pelo WhatsApp.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://modage.netlify.app/catalogo.html">
+  <meta property="og:image" content="https://modage.netlify.app/assets/logo/logo-modas-ge.png">
+  <meta property="og:locale" content="pt_BR">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://modage.netlify.app/assets/logo/logo-modas-ge.png">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Josefin+Sans:wght@100;200;300;400&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -1271,10 +1282,19 @@ function closeQV() {
 }
 document.getElementById('qvOverlay').addEventListener('click', e => { if(e.target === e.currentTarget) closeQV(); });
 
-function handleNewsletter(e) {
+async function handleNewsletter(e) {
   e.preventDefault();
-  alert('Obrigada! Voce receberá nossas novidades em breve.');
-  e.target.reset();
+  var input = e.target.querySelector('input');
+  var email = input ? input.value.trim() : '';
+  if (!email) return;
+  try {
+    if (window.MG && window.MG.saveLead) await window.MG.saveLead(email, 'catalogo');
+    alert('Obrigada! Voce receberá nossas novidades em breve.');
+    e.target.reset();
+  } catch (err) {
+    console.error(err);
+    alert('Ops, não consegui salvar agora. Tente novamente em instantes.');
+  }
 }
 
 // ── SACOLA (pedido via WhatsApp) ──────────────────────────
