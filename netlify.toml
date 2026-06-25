@@ -1,0 +1,4 @@
+# Modas GE — config do Netlify
+# Site estático (HTML/CSS/JS puro), sem etapa de build.
+[build]
+  publish = "."
