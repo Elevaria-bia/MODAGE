@@ -1067,7 +1067,9 @@
 </div>
 
 <!-- ══ SCRIPTS ════════════════════════════════════════════════ -->
-<script src="js/products.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-config.js"></script>
+<script src="js/store.js"></script>
 <script>
 const SVG_ICONS = {
   conjunto: '<svg width="90" height="90" viewBox="0 0 90 90" fill="none" stroke="rgba(201,168,76,0.45)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 38 Q30 22 45 28 Q60 22 70 38 L66 72 Q45 82 24 72 Z"/><path d="M24 43 Q45 34 66 43"/><ellipse cx="45" cy="32" rx="11" ry="7" stroke-opacity="0.3"/></svg>',
@@ -1077,25 +1079,8 @@ const SVG_ICONS = {
   camisola: '<svg width="90" height="90" viewBox="0 0 90 90" fill="none" stroke="rgba(201,168,76,0.45)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M33 14 Q45 10 57 14"/><path d="M33 14 L20 30 L28 33 L26 78 Q45 82 64 78 L62 33 L70 30 L57 14"/><path d="M28 33 Q45 28 62 33"/></svg>',
 };
 
-const CATALOG = [
-  {id:1,name:'Conjunto Renda Noite',cat:'conjunto',catLabel:'Conjunto',price:189.90,priceOld:249.90,badge:'sale',desc:'Conjunto sutia e calcinha em renda francesa.',sizes:['P','M','G','GG'],cores:['Preto','Vinho','Nude'],featured:true},
-  {id:2,name:'Conjunto Premium Cetim',cat:'conjunto',catLabel:'Conjunto',price:219.90,priceOld:null,badge:'exclusivo',desc:'Cetim italiano com bordado artesanal.',sizes:['PP','P','M','G'],cores:['Champagne','Rosa','Preto'],featured:true},
-  {id:3,name:'Conjunto Romantico Floral',cat:'conjunto',catLabel:'Conjunto',price:149.90,priceOld:null,badge:'novo',desc:'Conjunto com estampa floral bordada.',sizes:['P','M','G','GG'],cores:['Branco/Rose','Preto/Dourado'],featured:true},
-  {id:4,name:'Conjunto Bodies Tule',cat:'conjunto',catLabel:'Conjunto',price:279.90,priceOld:380.00,badge:'sale',desc:'Body em tule com calcinha de renda.',sizes:['P','M','G'],cores:['Preto','Nude Escuro'],featured:false},
-  {id:5,name:'Sutia Bojo Rendado',cat:'sutia',catLabel:'Sutia',price:89.90,priceOld:119.90,badge:'sale',desc:'Bojo com renda delicada, regulagem de alca.',sizes:['34A','34B','36A','36B','36C','38B','38C'],cores:['Preto','Nude','Rose','Vinho'],featured:true},
-  {id:6,name:'Sutia Sem Aro Premium',cat:'sutia',catLabel:'Sutia',price:99.90,priceOld:null,badge:'novo',desc:'Sem aro com bojo em espuma. Conforto e sustentacao.',sizes:['P','M','G','GG'],cores:['Preto','Nude','Branco'],featured:true},
-  {id:7,name:'Sutia Triangular Renda',cat:'sutia',catLabel:'Sutia',price:79.90,priceOld:null,badge:null,desc:'Triangular sem bojo. Renda italiana com acabamento premium.',sizes:['PP','P','M','G'],cores:['Rose','Branco','Preto'],featured:false},
-  {id:8,name:'Calcinha Fio Dental Luxo',cat:'calcinha',catLabel:'Calcinha',price:49.90,priceOld:69.90,badge:'sale',desc:'Fio dental em renda com laco cetim.',sizes:['PP','P','M','G','GG'],cores:['Preto','Nude','Rose','Vinho','Branco'],featured:true},
-  {id:9,name:'Calcinha Hot Pants Renda',cat:'calcinha',catLabel:'Calcinha',price:59.90,priceOld:null,badge:'novo',desc:'Hot pants em renda com elastico invisivel.',sizes:['P','M','G','GG'],cores:['Preto','Rose','Bege'],featured:true},
-  {id:10,name:'Calcinha Biquini Premium',cat:'calcinha',catLabel:'Calcinha',price:44.90,priceOld:null,badge:null,desc:'Biquini em microfibra com renda.',sizes:['PP','P','M','G','GG'],cores:['Nude','Preto','Rose','Branco','Vinho'],featured:false},
-  {id:11,name:'Kit 3 Calcinhas Basicas',cat:'calcinha',catLabel:'Calcinha',price:99.90,priceOld:149.90,badge:'exclusivo',desc:'Kit com 3 calcinhas em cores basicas.',sizes:['PP','P','M','G','GG'],cores:['Kit Neutros','Kit Tons Rose','Kit Pretos'],featured:true},
-  {id:12,name:'Pijama Cetim Longo',cat:'pijama',catLabel:'Pijama',price:189.90,priceOld:239.90,badge:'sale',desc:'Pijama manga longa e calca em cetim.',sizes:['P','M','G','GG'],cores:['Champagne','Preto','Rosa Antigo'],featured:true},
-  {id:13,name:'Conjunto Pijama Short',cat:'pijama',catLabel:'Pijama',price:139.90,priceOld:null,badge:'novo',desc:'Short + blusa de alca em cetim.',sizes:['P','M','G','GG'],cores:['Rose','Champagne','Preto','Lilas'],featured:true},
-  {id:14,name:'Pijama Floral Premium',cat:'pijama',catLabel:'Pijama',price:169.90,priceOld:null,badge:null,desc:'Estampa floral suave em viscose macia.',sizes:['P','M','G','GG','XG'],cores:['Floral Rose','Floral Azul','Floral Verde'],featured:false},
-  {id:15,name:'Camisola Maxi Luxo',cat:'camisola',catLabel:'Camisola',price:159.90,priceOld:199.90,badge:'sale',desc:'Camisola longa em chiffon com detalhes em renda.',sizes:['P','M','G','GG'],cores:['Champagne','Rosa','Branco Puro','Preto'],featured:true},
-  {id:16,name:'Baby Doll Renda',cat:'camisola',catLabel:'Camisola',price:119.90,priceOld:null,badge:'exclusivo',desc:'Baby doll em renda com calcinha combinando.',sizes:['PP','P','M','G'],cores:['Preto','Rose','Vinho'],featured:true},
-  {id:17,name:'Camisola Romantica',cat:'camisola',catLabel:'Camisola',price:99.90,priceOld:null,badge:'novo',desc:'Camisola curta em cetim com bordado floral.',sizes:['P','M','G','GG'],cores:['Branco','Rose','Champagne'],featured:true},
-];
+// Produtos carregados do Supabase (veja js/store.js)
+let PRODUCTS_DATA = [];
 
 let activeFilter = 'todos';
 let wishlist = JSON.parse(localStorage.getItem('mg_wish') || '[]');
@@ -1112,11 +1097,10 @@ function setFilter(cat, btn) {
 }
 
 function getFiltered() {
-  var SOURCE = (window.PRODUCTS && window.PRODUCTS.length > 0) ? window.PRODUCTS : CATALOG;
   const q = document.getElementById('searchInput').value.toLowerCase().trim();
-  return SOURCE.filter(p => {
-    const catOk = activeFilter === 'todos' || p.cat === activeFilter;
-    const searchOk = !q || p.name.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q);
+  return PRODUCTS_DATA.filter(p => {
+    const catOk = activeFilter === 'todos' || p.category === activeFilter;
+    const searchOk = !q || p.name.toLowerCase().includes(q) || (p.description||'').toLowerCase().includes(q);
     return catOk && searchOk;
   });
 }
@@ -1155,7 +1139,7 @@ function renderProducts() {
     const zapMsg = encodeURIComponent(
         'Ola! Vim pelo site da Modas GE Langery%0A' +
         '*Produto:* ' + p.name + '%0A' +
-        '*Categoria:* ' + p.catLabel + '%0A' +
+        '*Categoria:* ' + p.categoryLabel + '%0A' +
         '*Valor:* R$ ' + p.price.toFixed(2).replace('.',',') + '%0A%0A' +
         'Poderia me dar mais informacoes?'
       );
@@ -1163,11 +1147,11 @@ function renderProducts() {
       + '<div class="pcard__img">'
       + badgeHtml(p)
       + '<button class="pcard__wish ' + wActive + '" onclick="toggleWish(event,' + p.id + ')" title="Favoritar">' + wIcon + '</button>'
-      + '<div class="pcard__img-inner" style="background:' + (gradients[p.cat]||gradients.conjunto) + '">'
-      + (SVG_ICONS[p.cat] || SVG_ICONS.conjunto)
+      + '<div class="pcard__img-inner" style="background:' + (gradients[p.category]||gradients.conjunto) + '">'
+      + ((p.images && p.images.length) ? '<img src="' + p.images[0] + '" alt="' + p.name + '" loading="lazy">' : (SVG_ICONS[p.category] || SVG_ICONS.conjunto))
       + '</div></div>'
       + '<div class="pcard__info">'
-      + '<span class="pcard__cat">' + p.catLabel + '</span>'
+      + '<span class="pcard__cat">' + p.categoryLabel + '</span>'
       + '<div class="pcard__name">' + p.name + '</div>'
       + '<div class="pcard__price-row">'
       + '<span class="pcard__price">R$ ' + p.price.toFixed(2).replace('.',',') + '</span>'
@@ -1200,7 +1184,7 @@ function toggleWish(e, id) {
 }
 
 function openQV(id) {
-  const p = CATALOG.find(x => x.id === id);
+  const p = PRODUCTS_DATA.find(x => x.id === id);
   if (!p) return;
   var selectedSize = '';
   var sels = document.querySelectorAll('.qv-size.sel');
@@ -1208,15 +1192,17 @@ function openQV(id) {
   const zapMsg = encodeURIComponent(
     'Ola! Vim pelo site da Modas GE Langery%0A' +
     '*Produto:* ' + p.name + '%0A' +
-    '*Categoria:* ' + p.catLabel + '%0A' +
+    '*Categoria:* ' + p.categoryLabel + '%0A' +
     (selectedSize ? '*Tamanho:* ' + selectedSize + '%0A' : '') +
     '*Valor:* R$ ' + p.price.toFixed(2).replace('.',',') + '%0A%0A' +
     'Poderia me dar mais informacoes?'
   );
-  document.getElementById('qvImg').innerHTML = '<div style="width:100%;height:100%;min-height:360px;background:linear-gradient(145deg,#2A1009,#1A0A06);display:flex;align-items:center;justify-content:center">' + (SVG_ICONS[p.cat]||SVG_ICONS.conjunto) + '</div>';
-  document.getElementById('qvBody').innerHTML = '<span class="qv-cat">' + p.catLabel + '</span>'
+  document.getElementById('qvImg').innerHTML = (p.images && p.images.length)
+    ? '<img src="' + p.images[0] + '" alt="' + p.name + '" style="width:100%;height:100%;min-height:360px;object-fit:cover">'
+    : '<div style="width:100%;height:100%;min-height:360px;background:linear-gradient(145deg,#2A1009,#1A0A06);display:flex;align-items:center;justify-content:center">' + (SVG_ICONS[p.category]||SVG_ICONS.conjunto) + '</div>';
+  document.getElementById('qvBody').innerHTML = '<span class="qv-cat">' + p.categoryLabel + '</span>'
     + '<div class="qv-name">' + p.name + '</div>'
-    + '<p class="qv-desc">' + p.desc + '</p>'
+    + '<p class="qv-desc">' + (p.description||'') + '</p>'
     + '<div class="qv-price">R$ ' + p.price.toFixed(2).replace('.',',') + '</div>'
     + '<div class="qv-size-title">Tamanhos</div>'
     + '<div class="qv-sizes">' + p.sizes.map(s=>'<span class="qv-size" onclick="this.classList.toggle(\'sel\')">'+s+'</span>').join('') + '</div>'
@@ -1244,8 +1230,24 @@ window.addEventListener('scroll', () => {
   document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
 });
 
-// Init
-renderProducts();
+// Init — carrega os produtos do Supabase
+async function init() {
+  const grid = document.getElementById('productsGrid');
+  grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:80px 20px;color:rgba(250,248,245,.45);font-family:\'Cormorant Garamond\',serif;font-style:italic;font-size:18px">Carregando coleção…</div>';
+  try {
+    PRODUCTS_DATA = await window.MG.getProducts();
+  } catch (e) {
+    console.error('[Modas GE] Falha ao carregar produtos:', e);
+    PRODUCTS_DATA = [];
+  }
+  // Permite abrir já filtrado por categoria via URL (?cat=sutia)
+  const urlCat = new URLSearchParams(location.search).get('cat');
+  if (urlCat && (urlCat === 'todos' || (window.MG.CATEGORIES || []).includes(urlCat))) {
+    activeFilter = urlCat;
+  }
+  renderProducts();
+}
+init();
 </script>
 </body>
 </html>

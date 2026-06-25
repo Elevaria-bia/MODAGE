@@ -17,3 +17,7 @@ dist/
 # Env
 .env
 *.env.local
+
+# Arquivos internos (nao publicar)
+Manual_Modas_GE.docx
+tryon-teste.html
