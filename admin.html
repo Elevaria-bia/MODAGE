@@ -771,11 +771,6 @@
             <option value="camisola">Camisola</option>
           </select>
         </div>
-        <div class="form-group">
-          <label class="form-label">Emoji / Ícone</label>
-          <input type="text" class="form-input" id="pEmoji" placeholder="opcional" maxlength="4" style="display:none">
-          <div class="form-hint">Usado enquanto não há foto do produto</div>
-        </div>
 
         <!-- Preços -->
         <div class="form-group">
@@ -1200,8 +1195,7 @@ function openProductModal(id) {
     document.getElementById('modalTitle').textContent = 'Editar Produto';
     document.getElementById('editingId').value = id;
     document.getElementById('pName').value         = p.name || '';
-    document.getElementById('pCategory').value     = p.category || 'feminina';
-    document.getElementById('pEmoji').value        = p.emoji || '';
+    document.getElementById('pCategory').value     = p.category || 'conjunto';
     document.getElementById('pPrice').value        = p.price || '';
     document.getElementById('pPriceOld').value     = p.priceOld || '';
     document.getElementById('pBadge').value        = p.badge || '';
@@ -1227,10 +1221,10 @@ function closeProductModal() {
 }
 
 function clearForm() {
-  ['pName','pEmoji','pPrice','pPriceOld','pDescription'].forEach(id => {
+  ['pName','pPrice','pPriceOld','pDescription'].forEach(id => {
     document.getElementById(id).value = '';
   });
-  document.getElementById('pCategory').value  = 'feminina';
+  document.getElementById('pCategory').value  = 'conjunto';
   document.getElementById('pBadge').value     = '';
   document.getElementById('pFeatured').value  = 'true';
   document.getElementById('pInStock').value   = 'true';
