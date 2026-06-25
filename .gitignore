@@ -19,7 +19,6 @@ dist/
 *.env.local
 
 # Arquivos internos (nao publicar)
-Manual_Modas_GE.docx
 tryon-teste.html
-Dossie-e-Manual-Modas-GE.docx
+*.docx
 *.pdf
