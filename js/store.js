@@ -119,11 +119,42 @@
   };
 
   // ── IMAGENS (Storage / CDN) ──────────────────────────────
+  // Comprime/redimensiona no navegador antes de enviar: deixa a foto
+  // leve (mais fotos cabem e o site carrega mais rápido).
+  async function compressImage(file, maxDim, quality) {
+    maxDim = maxDim || 1280; quality = quality || 0.82;
+    if (!file.type || !file.type.startsWith('image/')) return file;
+    if (file.type === 'image/gif' || file.type === 'image/svg+xml') return file; // não rasteriza
+    try {
+      const dataUrl = await new Promise((res, rej) => {
+        const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(file);
+      });
+      const img = await new Promise((res, rej) => {
+        const im = new Image(); im.onload = () => res(im); im.onerror = rej; im.src = dataUrl;
+      });
+      const w0 = img.naturalWidth || img.width, h0 = img.naturalHeight || img.height;
+      if (w0 <= maxDim && h0 <= maxDim && file.size < 600 * 1024) return file; // já está leve
+      const scale = Math.min(1, maxDim / Math.max(w0, h0));
+      const w = Math.round(w0 * scale), h = Math.round(h0 * scale);
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      const blob = await new Promise(r => canvas.toBlob(r, 'image/jpeg', quality));
+      if (!blob || blob.size >= file.size) return file; // não compensou
+      return blob;
+    } catch (e) {
+      console.warn('[Modas GE] compressão falhou, enviando original:', e);
+      return file;
+    }
+  }
+
   window.MG.uploadImage = async function (file) {
-    const ext  = (file.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '');
+    const out = await compressImage(file);
+    const compressed = out !== file;
+    const ext  = compressed ? 'jpg' : ((file.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '') || 'jpg');
     const path = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
     const { error } = await sb.storage.from('produtos')
-      .upload(path, file, { cacheControl: '3600', upsert: false });
+      .upload(path, out, { cacheControl: '3600', upsert: false, contentType: out.type || 'image/jpeg' });
     if (error) throw error;
     const { data } = sb.storage.from('produtos').getPublicUrl(path);
     return data.publicUrl;
