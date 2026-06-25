@@ -1066,6 +1066,58 @@
   </div>
 </div>
 
+<!-- ══ SACOLA (pedido via WhatsApp) ═══════════════════════════ -->
+<style>
+  .bag-float{position:fixed;bottom:28px;left:28px;z-index:200;display:none;align-items:center;gap:10px;background:var(--choc);color:var(--cream);padding:12px 18px;border-radius:40px;box-shadow:0 8px 32px rgba(61,28,16,.45);font-size:9px;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;border:1px solid rgba(201,168,76,.3);transition:transform .2s}
+  .bag-float.show{display:flex}
+  .bag-float:hover{transform:scale(1.05)}
+  .bag-float__count{background:var(--gold);color:var(--noir);border-radius:50%;min-width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;padding:0 4px}
+  @media(max-width:600px){.bag-float{bottom:20px;left:16px;padding:12px 14px}}
+  .bag-overlay{position:fixed;inset:0;z-index:600;background:rgba(8,8,8,.7);backdrop-filter:blur(4px);display:none}
+  .bag-overlay.open{display:block}
+  .bag-drawer{position:fixed;top:0;right:0;bottom:0;width:min(420px,92vw);background:#141414;border-left:1px solid rgba(201,168,76,.15);z-index:601;transform:translateX(100%);transition:transform .3s ease;display:flex;flex-direction:column}
+  .bag-overlay.open .bag-drawer{transform:translateX(0)}
+  .bag-head{padding:22px 24px;border-bottom:1px solid rgba(201,168,76,.12);display:flex;align-items:center;justify-content:space-between}
+  .bag-head__title{font-family:'Playfair Display',serif;font-size:22px;color:var(--cream)}
+  .bag-close{font-size:24px;color:rgba(250,248,245,.5);background:none;border:none;cursor:pointer}
+  .bag-items{flex:1;overflow-y:auto;padding:8px 24px}
+  .bag-empty{text-align:center;padding:60px 20px;font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(250,248,245,.4);font-size:16px;line-height:1.7}
+  .bag-item{display:flex;gap:12px;padding:16px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+  .bag-item__img{width:56px;height:72px;border-radius:2px;overflow:hidden;flex-shrink:0;background:var(--noir2);display:flex;align-items:center;justify-content:center}
+  .bag-item__img img{width:100%;height:100%;object-fit:cover}
+  .bag-item__info{flex:1;min-width:0}
+  .bag-item__name{font-family:'Playfair Display',serif;font-size:14px;color:var(--cream);margin-bottom:3px}
+  .bag-item__meta{font-size:11px;color:rgba(250,248,245,.4);margin-bottom:6px}
+  .bag-item__price{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--gold)}
+  .bag-qty{display:flex;align-items:center;gap:10px;margin-top:8px}
+  .bag-qty button{width:24px;height:24px;border:1px solid rgba(201,168,76,.3);color:var(--cream);border-radius:2px;font-size:15px;display:flex;align-items:center;justify-content:center;background:none}
+  .bag-qty span{font-size:13px;min-width:18px;text-align:center}
+  .bag-item__remove{font-size:9px;color:var(--rose-dk);background:none;border:none;cursor:pointer;letter-spacing:.1em;text-transform:uppercase;margin-top:8px;padding:0}
+  .bag-foot{padding:20px 24px;border-top:1px solid rgba(201,168,76,.12)}
+  .bag-total{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px}
+  .bag-total__label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(250,248,245,.5)}
+  .bag-total__value{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--cream)}
+  .bag-send{width:100%;background:#25D366;color:#fff;padding:15px;border-radius:2px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:10px}
+  .bag-send:hover{background:#1fbb59}
+  .mini-toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--choc);color:var(--cream);padding:12px 22px;border-radius:40px;font-size:11px;letter-spacing:.05em;z-index:700;opacity:0;transition:all .3s;border:1px solid rgba(201,168,76,.3);pointer-events:none;max-width:90vw;text-align:center}
+  .mini-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+<button class="bag-float" id="bagFloat" onclick="openBag()">
+  <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h14l-1 11H4L3 6z"/><path d="M7 6V4a3 3 0 0 1 6 0v2"/></svg>
+  <span>Sacola</span>
+  <span class="bag-float__count" id="bagCount">0</span>
+</button>
+<div class="bag-overlay" id="bagOverlay">
+  <div class="bag-drawer">
+    <div class="bag-head">
+      <div class="bag-head__title">Minha Sacola</div>
+      <button class="bag-close" onclick="closeBag()">&#10005;</button>
+    </div>
+    <div class="bag-items" id="bagItems"></div>
+    <div class="bag-foot" id="bagFoot"></div>
+  </div>
+</div>
+
 <!-- ══ SCRIPTS ════════════════════════════════════════════════ -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/supabase-config.js"></script>
@@ -1160,7 +1212,7 @@ function renderProducts() {
       + '</div>'
       + '<div class="pcard__sizes">' + p.sizes.slice(0,5).map(s=>'<span class="pcard__size">'+s+'</span>').join('') + '</div>'
       + '<div class="pcard__actions">'
-      + '<a href="https://wa.me/553197873881?text=' + zapMsg + '" target="_blank" class="pcard__buy" onclick="event.stopPropagation()">Comprar</a>'
+      + '<button class="pcard__buy" onclick="event.stopPropagation();addToBag(' + p.id + ')">+ Sacola</button>'
       + '<a href="https://wa.me/553197873881?text=' + zapMsg + '" target="_blank" class="pcard__zap" title="WhatsApp" onclick="event.stopPropagation()"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 1a9 9 0 1 1-7.6 13.8L1 19l4.2-1.4A9 9 0 0 1 10 1z"/><path d="M7.5 7.5c.2.9.7 1.8 1.5 2.5.7.7 1.6 1.3 2.5 1.5l.5-.5c.3-.3.7-.4 1-.1.5.3 1.1.6 1.5 1 .2.3 0 .9-.5 1.3-.9 1-2.5 1.3-4.2.4C7.8 12.7 6 10.8 5.4 9c-.9-1.7-.6-3.3.4-4.2.4-.5 1-.7 1.3-.5.4.4.7 1 1 1.5.3.3.2.7-.1 1Z"/></svg></a>'
       + '</div></div></div>';
   }).join('');
@@ -1207,8 +1259,8 @@ function openQV(id) {
     + '<div class="qv-size-title">Tamanhos</div>'
     + '<div class="qv-sizes">' + p.sizes.map(s=>'<span class="qv-size" onclick="this.classList.toggle(\'sel\')">'+s+'</span>').join('') + '</div>'
     + '<div class="qv-actions">'
-    + '<a href="https://wa.me/553197873881?text=' + zapMsg + '" target="_blank" class="btn-solid">Comprar pelo WhatsApp</a>'
-    + '<a href="https://wa.me/553197873881?text=' + zapMsg + '" target="_blank" class="btn-border">Ver mais opcoes</a>'
+    + '<button class="btn-solid" onclick="addToBagFromQV(' + p.id + ')">Adicionar à Sacola</button>'
+    + '<a href="https://wa.me/553197873881?text=' + zapMsg + '" target="_blank" class="btn-border">Falar no WhatsApp</a>'
     + '</div>';
   document.getElementById('qvOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -1223,6 +1275,92 @@ function handleNewsletter(e) {
   e.preventDefault();
   alert('Obrigada! Voce receberá nossas novidades em breve.');
   e.target.reset();
+}
+
+// ── SACOLA (pedido via WhatsApp) ──────────────────────────
+let bag = JSON.parse(localStorage.getItem('mg_bag') || '[]');
+
+function saveBag() { localStorage.setItem('mg_bag', JSON.stringify(bag)); updateBagCount(); }
+function updateBagCount() {
+  const n = bag.reduce((s,i)=>s+i.qty,0);
+  const c = document.getElementById('bagCount'); if (c) c.textContent = n;
+  const f = document.getElementById('bagFloat'); if (f) f.classList.toggle('show', n>0);
+}
+function addToBag(id, size) {
+  const p = PRODUCTS_DATA.find(x=>x.id===id); if (!p) return;
+  size = size || '';
+  const existing = bag.find(i => i.id===id && (i.size||'')===size);
+  if (existing) existing.qty++;
+  else bag.push({id:p.id, name:p.name, categoryLabel:p.categoryLabel, price:p.price, image:(p.images&&p.images[0])||'', size:size, qty:1});
+  saveBag();
+  showBagToast(p.name + ' na sacola');
+}
+function addToBagFromQV(id) {
+  let size = '';
+  const sel = document.querySelector('.qv-size.sel');
+  if (sel) size = sel.textContent;
+  addToBag(id, size);
+  closeQV();
+  openBag();
+}
+function changeQty(idx, delta) {
+  if (!bag[idx]) return;
+  bag[idx].qty += delta;
+  if (bag[idx].qty <= 0) bag.splice(idx,1);
+  saveBag(); renderBag();
+}
+function removeFromBag(idx) { bag.splice(idx,1); saveBag(); renderBag(); }
+function openBag() { renderBag(); document.getElementById('bagOverlay').classList.add('open'); document.body.style.overflow='hidden'; }
+function closeBag() { document.getElementById('bagOverlay').classList.remove('open'); document.body.style.overflow=''; }
+function renderBag() {
+  const items = document.getElementById('bagItems');
+  const foot = document.getElementById('bagFoot');
+  if (bag.length === 0) {
+    items.innerHTML = '<div class="bag-empty">Sua sacola está vazia.<br>Adicione as peças que você amou ♡</div>';
+    foot.innerHTML = '';
+    return;
+  }
+  items.innerHTML = bag.map((it, idx) => {
+    const img = it.image ? '<img src="'+it.image+'" alt="'+it.name+'">' : '<svg width="26" height="26" viewBox="0 0 90 90" fill="none" stroke="rgba(201,168,76,0.4)" stroke-width="1.5"><path d="M20 38 Q30 22 45 28 Q60 22 70 38 L66 72 Q45 82 24 72 Z"/></svg>';
+    const preco = it.price != null ? 'R$ ' + it.price.toFixed(2).replace('.',',') : 'Sob consulta';
+    return '<div class="bag-item"><div class="bag-item__img">' + img + '</div>'
+      + '<div class="bag-item__info">'
+      + '<div class="bag-item__name">' + it.name + '</div>'
+      + '<div class="bag-item__meta">' + it.categoryLabel + (it.size ? ' · Tam ' + it.size : '') + '</div>'
+      + '<div class="bag-item__price">' + preco + '</div>'
+      + '<div class="bag-qty"><button onclick="changeQty(' + idx + ',-1)">−</button><span>' + it.qty + '</span><button onclick="changeQty(' + idx + ',1)">+</button></div>'
+      + '<button class="bag-item__remove" onclick="removeFromBag(' + idx + ')">Remover</button>'
+      + '</div></div>';
+  }).join('');
+  const allPriced = bag.every(i => i.price != null);
+  const total = bag.reduce((s,i)=> s + (i.price != null ? i.price*i.qty : 0), 0);
+  const totalTxt = allPriced ? 'R$ ' + total.toFixed(2).replace('.',',') : 'A combinar';
+  foot.innerHTML = '<div class="bag-total"><span class="bag-total__label">Total</span><span class="bag-total__value">' + totalTxt + '</span></div>'
+    + '<button class="bag-send" onclick="sendBagWhatsApp()"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 1a9 9 0 1 1-7.6 13.8L1 19l4.2-1.4A9 9 0 0 1 10 1z"/></svg> Enviar pedido no WhatsApp</button>';
+}
+function sendBagWhatsApp() {
+  if (bag.length === 0) return;
+  const lines = ['Olá! Vim pelo site da Modas GE Langery e gostaria de fazer este pedido:', ''];
+  bag.forEach((it, i) => {
+    const preco = it.price != null ? 'R$ ' + it.price.toFixed(2).replace('.',',') : 'Sob consulta';
+    lines.push((i+1) + ') ' + it.name);
+    lines.push('   ' + it.categoryLabel + (it.size ? ' | Tam ' + it.size : '') + ' | Qtd: ' + it.qty + ' | ' + preco);
+  });
+  const allPriced = bag.every(i => i.price != null);
+  lines.push('');
+  lines.push(allPriced
+    ? 'Total: R$ ' + bag.reduce((s,i)=>s+i.price*i.qty,0).toFixed(2).replace('.',',')
+    : 'Total: a combinar');
+  window.open('https://wa.me/553197873881?text=' + encodeURIComponent(lines.join('\n')), '_blank');
+}
+let bagToastTimer;
+function showBagToast(msg) {
+  let t = document.getElementById('miniToast');
+  if (!t) { t = document.createElement('div'); t.id='miniToast'; t.className='mini-toast'; document.body.appendChild(t); }
+  t.textContent = '✓ ' + msg;
+  t.classList.add('show');
+  clearTimeout(bagToastTimer);
+  bagToastTimer = setTimeout(()=>t.classList.remove('show'), 2200);
 }
 
 // Navbar scroll
@@ -1246,6 +1384,7 @@ async function init() {
     activeFilter = urlCat;
   }
   renderProducts();
+  updateBagCount();
 }
 init();
 </script>
